@@ -58,6 +58,10 @@ class Vector2 {
     clone.normalize();
     return clone;
   }
+
+  toArray(): [number, number] {
+    return [this.x, this.y];
+  }
 }
 
 export {Vector2};

@@ -1,5 +1,6 @@
 import { LabStatus } from "../model/LabStatus";
 import { DemoListScene } from "../scene/DemoListScene";
+import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { Scene } from "../scene/Scene";
 
 class ScenePlayer {
@@ -8,7 +9,8 @@ class ScenePlayer {
 
   constructor(labStatus: LabStatus) {
     this.labStatus = labStatus;
-    this.scene = new DemoListScene(labStatus);
+    // this.scene = new DemoListScene(labStatus);
+    this.scene = new PerlinWaveScene(labStatus);
 
     const updateFunction = () => {
       this.scene?.update(this.labStatus);

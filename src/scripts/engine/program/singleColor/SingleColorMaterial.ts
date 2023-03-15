@@ -43,7 +43,6 @@ class SingleColorMaterial implements Material {
 
   bind(gl: WebGL2RenderingContext): void {
     if (!this.colorUniform || !this.offsetUniform) {
-      console.log('could not bind');
       return;
     }
 

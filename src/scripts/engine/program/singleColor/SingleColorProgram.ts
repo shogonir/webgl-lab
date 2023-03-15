@@ -1,5 +1,6 @@
 import { GLProgram } from "../../common/GLProgram";
 import { Object3D } from "../../Object3D";
+import { Program } from "../../Program";
 import { SingleColorMaterial } from "./SingleColorMaterial";
 
 const vertexShaderSource = `#version 300 es
@@ -33,7 +34,7 @@ void main() {
 }
 `;
 
-class SingleColorProgram {
+class SingleColorProgram implements Program {
   readonly gl: WebGL2RenderingContext;
   readonly glProgram: GLProgram;
 
@@ -46,7 +47,7 @@ class SingleColorProgram {
   }
 
   static create(
-    gl: WebGL2RenderingContext,
+    gl: WebGL2RenderingContext
   ): SingleColorProgram | undefined {
     const glProgram = GLProgram.create(gl, vertexShaderSource, fragmentShaderSource, 'SingleColorProgram');
     if (!glProgram) {

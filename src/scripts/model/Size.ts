@@ -1,3 +1,5 @@
+import { Vector2 } from "../math/Vector2";
+
 class Size {
   private width: number;
   private height: number;
@@ -26,6 +28,10 @@ class Size {
   setSize(width: number, height: number): void {
     this.width = width;
     this.height = height;
+  }
+
+  toVector2(): Vector2 {
+    return new Vector2(this.width, this.height);
   }
 }
 

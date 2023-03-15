@@ -41,6 +41,13 @@ class GLGeometry {
     return new GLGeometry(vertexBuffer, indexBuffer);
   }
 
+  applyVertices(
+    gl: WebGL2RenderingContext,
+    vertices: number[]
+  ): void {
+    this.vertexBuffer.applyVertices(gl, vertices);
+  }
+
   bind(gl: WebGL2RenderingContext): void {
     this.vertexBuffer.bind(gl);
     this.indexBuffer.bind(gl);

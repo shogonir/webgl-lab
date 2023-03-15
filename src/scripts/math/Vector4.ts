@@ -84,6 +84,10 @@ class Vector4 {
     clone.normalize();
     return clone;
   }
+
+  toArray(): [number, number, number, number] {
+    return [this.x, this.y, this.z, this.w];
+  }
 }
 
 export {Vector4};

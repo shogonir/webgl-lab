@@ -2,7 +2,7 @@ import { GLAttribute } from "./GLAttribute";
 
 class GLBuffer {
   readonly buffer: WebGLBuffer;
-  readonly typedArray: Float32Array;
+  private typedArray: Float32Array;
   readonly stride: number;
   readonly attributes: GLAttribute[];
 
@@ -41,6 +41,18 @@ class GLBuffer {
     }
 
     return new GLBuffer(buffer, typedArray, stride, attributes);
+  }
+
+  applyVertices(
+    gl: WebGL2RenderingContext,
+    vertices: number[]
+  ): void {
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+    if (this.typedArray.length !== vertices.length) {
+      this.typedArray = new Float32Array(vertices);
+    }
+    this.typedArray.set(vertices);
+    gl.bufferData(gl.ARRAY_BUFFER, this.typedArray, gl.STATIC_DRAW);
   }
 
   bind(gl: WebGL2RenderingContext): void {

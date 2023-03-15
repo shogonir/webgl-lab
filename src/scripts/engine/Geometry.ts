@@ -6,15 +6,24 @@ class Geometry {
   private vertices: number[];
   private indices: number[];
 
+  private needsApplyVertices: boolean;
+
   private glGeometry?: GLGeometry;
 
   constructor(vertices: number[], indices: number[]) {
     this.vertices = vertices;
     this.indices = indices;
+
+    this.needsApplyVertices = false;
   }
 
   getIndicesLength(): number {
     return this.indices.length;
+  }
+
+  setVertices(vertices: number[]): void {
+    this.vertices = vertices;
+    this.needsApplyVertices = true;
   }
 
   isDrawable(): boolean {
@@ -39,7 +48,14 @@ class Geometry {
   }
 
   bind(gl: WebGL2RenderingContext): void {
-    this.glGeometry?.bind(gl);
+    if (!this.glGeometry) {
+      return;
+    }
+
+    if (this.needsApplyVertices) {
+      this.glGeometry.applyVertices(gl, this.vertices);
+    }
+    this.glGeometry.bind(gl);
   }
 }
 

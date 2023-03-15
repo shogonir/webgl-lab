@@ -73,6 +73,10 @@ class Vector3 {
     clone.normalize();
     return clone;
   }
+
+  toArray(): [number, number, number] {
+    return [this.x, this.y, this.z];
+  }
 }
 
 export {Vector3};
