@@ -1,4 +1,3 @@
-import { Vector2 } from "../../../math/Vector2";
 import { Material } from "../../Material";
 import { GLUniformFloat1 } from "../../common/uniform/GLUniformFloat1";
 

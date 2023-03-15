@@ -127,12 +127,12 @@ float gln_perlin(vec3 P) {
 }
 
 void main() {
-  vec2 coord = position.xy * 5.0;
-  float perlinValue = 0.3 * gln_perlin(vec3(coord, time / 5000.0));
+  vec2 coord = position.xy * 5.0 + vec2(time / 1000.0, time / 1000.0);
+  float perlinValue = gln_perlin(vec3(coord, time / 2000.0));
 
-  gl_Position = projection * view * model * vec4(position.xy, perlinValue, 1.0);
+  gl_Position = projection * view * model * vec4(position.xy, 0.2 * perlinValue, 1.0);
   
-  passValue = perlinValue;
+  passValue = 0.5 * perlinValue;
 }
 `;
 
