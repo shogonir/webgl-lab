@@ -8,7 +8,7 @@ class SingleColorMaterial implements Material {
 
   private colorUniform: GLUniformFloat4 | undefined;
 
-  constructor(color: Color, offset: Vector2) {
+  constructor(color: Color) {
     this.color = color;
   }
 

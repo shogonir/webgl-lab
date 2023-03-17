@@ -205,7 +205,7 @@ class PerlineWaveProgram implements Program {
     for (let y = 0; y < side; y++) {
       for (let x = 0; x < side; x++) {
         vertices[(y * side + x) * 3 + 0] = width * x / (side - 1) - halfWidth;
-        vertices[(y * side + x) * 3 + 1] = width * y / (side - 1) - halfWidth;
+        vertices[(y * side + x) * 3 + 1] = halfWidth - width * y / (side - 1);
         vertices[(y * side + x) * 3 + 2] = 0;
       }
     }
@@ -229,6 +229,9 @@ class PerlineWaveProgram implements Program {
       material.prepare(gl, program);
     }
     material.bind(gl);
+
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
 
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
   }

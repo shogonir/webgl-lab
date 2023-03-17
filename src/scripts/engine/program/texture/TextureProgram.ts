@@ -99,6 +99,8 @@ class TextureProgram {
     }
     material.bind(gl);
 
+    gl.disable(gl.DEPTH_TEST);
+
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
   }
 }

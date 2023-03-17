@@ -1,5 +1,6 @@
 import { LabStatus } from "../model/LabStatus";
 import { DemoListScene } from "../scene/DemoListScene";
+import { MainMenuScene } from "../scene/MainMenuScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { Scene } from "../scene/Scene";
 
@@ -11,6 +12,7 @@ class ScenePlayer {
   constructor(labStatus: LabStatus) {
     this.labStatus = labStatus;
     this.sceneList = [
+      new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
       new PerlinWaveScene(labStatus),
     ];

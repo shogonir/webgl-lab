@@ -107,6 +107,9 @@ class SingleColorProgram implements Program {
     }
     material.bind(gl);
 
+    gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.CULL_FACE);
+
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
   }
 }

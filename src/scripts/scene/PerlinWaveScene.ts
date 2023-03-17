@@ -3,14 +3,13 @@ import { Geometry } from "../engine/Geometry";
 import { Object3D } from "../engine/Object3D";
 import { PerlinWaveMaterial } from "../engine/program/perlinWave/PerlinWaveMaterial";
 import { PerlineWaveProgram, WAVE_SIDE } from "../engine/program/perlinWave/PerlinWaveProgram";
+import { ProgramMap } from "../engine/program/ProgramMap";
 import { Transform } from "../engine/Transform";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { LabStatus } from "../model/LabStatus";
 import { Scene } from "./Scene";
 
 class PerlinWaveScene implements Scene {
-  private program: PerlineWaveProgram;
-
   private polar: PolarCoordinate3;
   private camera: PerspectiveCamera;
 
@@ -19,15 +18,6 @@ class PerlinWaveScene implements Scene {
   private startTime: number;
 
   constructor(labStatus: LabStatus) {
-    const gl = labStatus.gl;
-
-    const glProgram = PerlineWaveProgram.create(gl);
-    if (!glProgram) {
-      return;
-    }
-
-    this.program = glProgram;
-
     const deg2rad = Math.PI / 180.0;
     this.polar = new PolarCoordinate3(0, 45 * deg2rad, 1);
     const aspect = labStatus.clientSize.getWidth() / labStatus.clientSize.getHeight();
@@ -42,7 +32,7 @@ class PerlinWaveScene implements Scene {
     for (let y = 0; y < side; y++) {
       for (let x = 0; x < side; x++) {
         vertices[(y * side + x) * 3 + 0] = width * x / (side - 1) - halfWidth;
-        vertices[(y * side + x) * 3 + 1] = width * y / (side - 1) - halfWidth;
+        vertices[(y * side + x) * 3 + 1] = halfWidth - width * y / (side - 1);
         vertices[(y * side + x) * 3 + 2] = 0.0;
 
         if (x === 0 || y === 0) {
@@ -77,6 +67,7 @@ class PerlinWaveScene implements Scene {
 
   update(labStatus: LabStatus): void {
     const gl = labStatus.gl;
+    const perlinWaveProgram = ProgramMap.perlinWaveProgram;
 
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clearDepth(1.0);
@@ -90,9 +81,9 @@ class PerlinWaveScene implements Scene {
     this.camera.updateMatrix();
     const viewMatrix = this.camera.getViewMatrix();
     const projectionMatrix = this.camera.getProjectionMatrix();
-    this.program.updateCamera(viewMatrix, projectionMatrix);
+    perlinWaveProgram.updateCamera(viewMatrix, projectionMatrix);
   
-    this.program.draw(this.waveObject);
+    perlinWaveProgram.draw(this.waveObject);
     
     gl.flush();
   }

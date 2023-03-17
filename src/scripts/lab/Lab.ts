@@ -1,3 +1,4 @@
+import { ProgramMap } from "../engine/program/ProgramMap";
 import { LabStatus } from "../model/LabStatus";
 import { Size } from "../model/Size";
 import { ScenePlayer } from "../player/ScenePlayer";
@@ -26,6 +27,12 @@ class Lab {
     const gl = canvas.getContext('webgl2');
     if (!gl) {
       console.warn('[webgl-lab] no webgl2 context. check your browser');
+      return undefined;
+    }
+
+    const setup = ProgramMap.setup(gl);
+    if (!setup) {
+      console.error('[ERROR] ProgramMap.setup() failed');
       return undefined;
     }
 
