@@ -83,6 +83,15 @@ class PerspectiveCamera implements Camera {
     this._far = value;
   }
 
+  setPolar(polar: PolarCoordinate3): void {
+    const position = polar.toVector3();
+    const target = Vector3.zero();
+    const upVector = polar.toUpVector3();
+    this.position.setValues(position.x, position.y, position.z);
+    this.target.setValues(target.x, target.y, target.z);
+    this.upVector.setValues(upVector.x, upVector.y, upVector.z);
+  }
+
   updateMatrix(): void {
     mat4.identity(this.viewMatrix);
     mat4.lookAt(

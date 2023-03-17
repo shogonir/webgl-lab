@@ -78,15 +78,22 @@ class PerlinWaveScene implements Scene {
   update(labStatus: LabStatus): void {
     const gl = labStatus.gl;
 
+    gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    gl.clearDepth(1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
     this.waveObject.transform.rotation.rotateZ(0.0001 * Math.PI);
     this.waveObject.material.time = performance.now() - this.startTime;
     
+    const clientSize = labStatus.clientSize;
+    this.camera.aspect = clientSize.getWidth() / clientSize.getHeight();
     this.camera.updateMatrix();
     const viewMatrix = this.camera.getViewMatrix();
     const projectionMatrix = this.camera.getProjectionMatrix();
     this.program.updateCamera(viewMatrix, projectionMatrix);
-    
+  
     this.program.draw(this.waveObject);
+    
     gl.flush();
   }
 

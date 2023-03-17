@@ -176,7 +176,7 @@ class PerlineWaveProgram implements Program {
 
     const glCamera = GLCamera.create(gl, glProgram.program);
     if (!glCamera) {
-      console.error('[ERROR] PerlinWaveProgra,.create() could not create GLCamera');
+      console.error('[ERROR] PerlinWaveProgram.create() could not create GLCamera');
       return undefined;
     }
 
@@ -202,7 +202,6 @@ class PerlineWaveProgram implements Program {
     const width = 1.0;
     const halfWidth = width / 2.0;
     const vertices: number[] = new Array(side * side * 3);
-    const time = new Date().getTime();
     for (let y = 0; y < side; y++) {
       for (let x = 0; x < side; x++) {
         vertices[(y * side + x) * 3 + 0] = width * x / (side - 1) - halfWidth;
@@ -231,8 +230,6 @@ class PerlineWaveProgram implements Program {
     }
     material.bind(gl);
 
-    gl.enable(gl.DEPTH_TEST);
-    gl.disable(gl.CULL_FACE);
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
   }
 }

@@ -30,8 +30,6 @@ class GLBuffer {
       return undefined;
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    const typedArray = new Float32Array(array);
-    gl.bufferData(gl.ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
 
     const strideBytes = attributes.length === 1 ? 0 : stride * Float32Array.BYTES_PER_ELEMENT;
     for (const a of attributes) {
@@ -39,6 +37,9 @@ class GLBuffer {
       gl.enableVertexAttribArray(a.location);
       gl.vertexAttribPointer(a.location, a.size, gl.FLOAT, a.normalized, strideBytes, offsetBytes);
     }
+
+    const typedArray = new Float32Array(array);
+    gl.bufferData(gl.ARRAY_BUFFER, typedArray, gl.STATIC_DRAW);
 
     return new GLBuffer(buffer, typedArray, stride, attributes);
   }
@@ -57,6 +58,14 @@ class GLBuffer {
 
   bind(gl: WebGL2RenderingContext): void {
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
+
+    const attributes = this.attributes;
+    const strideBytes = attributes.length === 1 ? 0 : this.stride * Float32Array.BYTES_PER_ELEMENT;
+    for (const a of attributes) {
+      const offsetBytes = a.offset * Float32Array.BYTES_PER_ELEMENT;
+      gl.enableVertexAttribArray(a.location);
+      gl.vertexAttribPointer(a.location, a.size, gl.FLOAT, a.normalized, strideBytes, offsetBytes);
+    }
   }
 }
 

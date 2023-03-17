@@ -33,6 +33,12 @@ class Vector3 {
     this._z = value;
   }
 
+  setValues(x: number, y: number, z: number): void {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+
   static zero(): Vector3 {
     return new Vector3(0.0, 0.0, 0.0);
   }

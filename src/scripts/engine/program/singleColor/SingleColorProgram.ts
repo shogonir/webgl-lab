@@ -1,3 +1,5 @@
+import { mat4 } from "gl-matrix";
+import { GLCamera } from "../../common/GLCamera";
 import { GLProgram } from "../../common/GLProgram";
 import { Object3D } from "../../Object3D";
 import { Program } from "../../Program";
@@ -7,16 +9,14 @@ const vertexShaderSource = `#version 300 es
 
 in vec3 position;
 
-// uniform mat4 model;
-// uniform mat4 view;
-// uniform mat4 projection;
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 uniform vec4 color;
-uniform vec2 offset;
 
 void main() {
-  gl_Position = vec4(position.xy + offset, position.z, 1.0);
-  // gl_Position = projection * view * model * vec4(position, 1.0);
+  gl_Position = projection * view * model * vec4(position, 1.0);
 }
 `;
 
@@ -37,13 +37,16 @@ void main() {
 class SingleColorProgram implements Program {
   readonly gl: WebGL2RenderingContext;
   readonly glProgram: GLProgram;
+  readonly glCamera: GLCamera;
 
   private constructor(
     gl: WebGL2RenderingContext,
-    glProgram: GLProgram
+    glProgram: GLProgram,
+    glCamera: GLCamera
   ) {
     this.gl = gl;
     this.glProgram = glProgram;
+    this.glCamera = glCamera;
   }
 
   static create(
@@ -55,13 +58,27 @@ class SingleColorProgram implements Program {
       return undefined;
     }
 
-    return new SingleColorProgram(gl, glProgram);
+    const glCamera = GLCamera.create(gl, glProgram.program);
+    if (!glCamera) {
+      console.error('[ERROR] SingleColorProgram.create() could not create GLCamera');
+      return undefined;
+    }
+
+    return new SingleColorProgram(gl, glProgram, glCamera);
   }
 
   setup(): void {
     const gl = this.gl;
     const program: WebGLProgram = this.glProgram.program;
     gl.useProgram(program);
+  }
+
+  updateCamera(viewMatrix: mat4, projectionMatrix: mat4): void {
+    const gl = this.gl;
+    const program = this.glProgram.program;
+    gl.useProgram(program);
+
+    this.glCamera.update(gl, viewMatrix, projectionMatrix);
   }
 
   draw(object3D: Object3D<SingleColorMaterial>): void {
@@ -74,14 +91,22 @@ class SingleColorProgram implements Program {
     if (!geometry.isDrawable()) {
       geometry.prepare(gl, program);
     }
+    geometry.bind(gl);
 
+    const transform = object3D.transform;
+    if (!transform.isDrawable()) {
+      transform.prepare(gl, program);
+    }
+    transform.update();
+    transform.bind(gl);
+
+    gl.useProgram(program);
     const material = object3D.material;
     if (!material.isDrawable()) {
       material.prepare(gl, program);
     }
-
-    geometry.bind(gl);
     material.bind(gl);
+
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
   }
 }
