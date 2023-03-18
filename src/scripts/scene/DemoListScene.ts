@@ -1,10 +1,12 @@
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";
 import { Geometry } from "../engine/Geometry";
+import { QuadGeometry } from "../engine/geometry/QuadGeometry";
 import { Object3D } from "../engine/Object3D";
 import { ProgramMap } from "../engine/program/ProgramMap";
 import { SingleColorMaterial } from "../engine/program/singleColor/SingleColorMaterial";
 import { TextureMaterial } from "../engine/program/texture/TextureMaterial";
 import { Transform } from "../engine/Transform";
+import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { Color } from "../model/Color";
 import { LabStatus } from "../model/LabStatus";
@@ -25,23 +27,11 @@ class DemoListScene implements Scene {
   constructor(labStatus: LabStatus) {
     this.degree = 0;
     
-    const deg2rad = Math.PI / 180.0;
-    this.polar = new PolarCoordinate3(-90 * deg2rad, 30 * deg2rad, 1);
+    this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 30 * MathUtil.deg2rad, 1);
     const clientSize = labStatus.clientSize;
     const aspect = clientSize.getWidth() / clientSize.getHeight();
-    const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * deg2rad, aspect, 0.1, 2.0);
+    const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * MathUtil.deg2rad, aspect, 0.1, 2.0);
     this.camera = camera;
-
-    const vertices = [
-      -0.5,  0.5, 0.0,
-      -0.5, -0.5, 0.0,
-      0.5, -0.5, 0.0,
-      0.5,  0.5, 0.0,
-    ];
-    const indices = [
-      0, 1, 2,
-      2, 3, 0,
-    ];
 
     const canvas = document.createElement('canvas');
     const side = 16;
@@ -59,32 +49,25 @@ class DemoListScene implements Scene {
       context.fillStyle = 'blue';
       context.fillRect(halfSide, halfSide, halfSide, halfSide);
     }
-    const uv: number[] = [
-      0.0, 0.0,
-      0.0, 1.0,
-      1.0, 1.0,
-      1.0, 0.0,
-    ];
+
+    const quadGeometry = QuadGeometry.create(1.0, ['position', 'normal']);
+    const uvGeometry = QuadGeometry.create(1.0, ['position', 'uv']);
     
     const transform1 = Transform.identity();
-    const geometry1 = new Geometry(vertices, indices);
     const material1 = new SingleColorMaterial(Color.magenta());
-    this.object1 = new Object3D(transform1, geometry1, material1);
+    this.object1 = new Object3D(transform1, quadGeometry, material1);
 
     const transform2 = Transform.identity();
-    const geometry2 = new Geometry(vertices, indices);
     const material2 = new SingleColorMaterial(Color.yellow());
-    this.object2 = new Object3D(transform2, geometry2, material2);
+    this.object2 = new Object3D(transform2, quadGeometry, material2);
 
     const transform3 = Transform.identity();
-    const geometry3 = new Geometry(vertices, indices);
-    const material3 = new TextureMaterial(canvas, uv);
-    this.object3 = new Object3D(transform3, geometry3, material3);
+    const material3 = new TextureMaterial(canvas);
+    this.object3 = new Object3D(transform3, uvGeometry, material3);
 
     const transform4 = Transform.identity();
-    const geometry4 = new Geometry(vertices, indices);
-    const material4 = new TextureMaterial(canvas, uv);
-    this.object4 = new Object3D(transform4, geometry4, material4);
+    const material4 = new TextureMaterial(canvas);
+    this.object4 = new Object3D(transform4, uvGeometry, material4);
   }
 
   setup(): void {
@@ -118,17 +101,17 @@ class DemoListScene implements Scene {
 
     const x3 = 0.5 * Math.cos(radian + (Math.PI * 1 / 2));
     const y3 = 0.5 * Math.sin(radian + (Math.PI * 1 / 2));
-    this.object1.transform.position.setValues(x3, y3, 0.0);
+    this.object1.transform.position.setValues(x3, y3, 0.1);
     singleColorProgram.draw(this.object1);
 
     const x2 = 0.5 * Math.cos(radian + Math.PI);
     const y2 = 0.5 * Math.sin(radian + Math.PI);
-    this.object4.transform.position.setValues(x2, y2, 0.0);
+    this.object4.transform.position.setValues(x2, y2, 0.2);
     textureProgram.draw(this.object4);
 
     const x4 = 0.5 * Math.cos(radian + (Math.PI * 3 / 2));
     const y4 = 0.5 * Math.sin(radian + (Math.PI * 3 / 2));
-    this.object2.transform.position.setValues(x4, y4, 0.0);
+    this.object2.transform.position.setValues(x4, y4, 0.3);
     singleColorProgram.draw(this.object2);
 
     gl.flush();

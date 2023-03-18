@@ -3,6 +3,7 @@ import { DemoListScene } from "../scene/DemoListScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { Scene } from "../scene/Scene";
+import { TextureMappingScene } from "../scene/TextureMappingScene";
 
 class ScenePlayer {
   private labStatus: LabStatus;
@@ -12,6 +13,7 @@ class ScenePlayer {
   constructor(labStatus: LabStatus) {
     this.labStatus = labStatus;
     this.sceneList = [
+      new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
       new PerlinWaveScene(labStatus),

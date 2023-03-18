@@ -1,3 +1,10 @@
+type GLAttributeParameter = {
+  normalized: boolean;
+  offset: number;
+  size: number;
+  name: string;
+};
+
 class GLAttribute {
   readonly location: number;
   readonly normalized: boolean;
@@ -17,7 +24,7 @@ class GLAttribute {
   }
 
   static create(
-    gl: WebGLRenderingContext,
+    gl: WebGL2RenderingContext,
     program: WebGLProgram,
     normalized: boolean,
     offset: number,
@@ -27,6 +34,21 @@ class GLAttribute {
     const location = gl.getAttribLocation(program, name);
     return new GLAttribute(location, normalized, offset, size);
   }
+
+  static createWithParameter(
+    gl: WebGL2RenderingContext,
+    program: WebGLProgram,
+    parameter: GLAttributeParameter
+  ): GLAttribute | undefined {
+    return GLAttribute.create(
+      gl,
+      program,
+      parameter.normalized,
+      parameter.offset,
+      parameter.size,
+      parameter.name
+    );
+  }
 }
 
-export {GLAttribute};
+export {GLAttribute, GLAttributeParameter};

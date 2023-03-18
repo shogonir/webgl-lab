@@ -1,18 +1,22 @@
-import { GLBuffer } from "./common/GLBuffer";
-import { GLGeometry } from "./common/GLGeometry";
-import { GLIndexBuffer } from "./common/GLIndexBuffer";
+import { GLAttributeParameterKey, GLGeometry } from "./common/GLGeometry";
 
 class Geometry {
   private vertices: number[];
   private indices: number[];
+  private attributeKeys: GLAttributeParameterKey[];
 
   private needsApplyVertices: boolean;
 
   private glGeometry?: GLGeometry;
 
-  constructor(vertices: number[], indices: number[]) {
+  constructor(
+    vertices: number[], 
+    indices: number[],
+    attributeKeys: GLAttributeParameterKey[] = ['position']
+  ) {
     this.vertices = vertices;
     this.indices = indices;
+    this.attributeKeys = attributeKeys;
 
     this.needsApplyVertices = false;
   }
@@ -38,7 +42,7 @@ class Geometry {
       return;
     }
 
-    const glGeometry= GLGeometry.create(gl, program, this.vertices, this.indices);
+    const glGeometry= GLGeometry.create(gl, program, this.vertices, this.indices, this.attributeKeys);
     if (!glGeometry) {
       console.error('[ERROR] Geometry.prepare() could not create GLGeometry');
       return;

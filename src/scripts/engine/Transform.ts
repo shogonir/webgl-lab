@@ -29,6 +29,10 @@ class Transform {
     return new Transform(Vector3.zero(), Quaternion.identity(), Vector3.ones());
   }
 
+  getModelMatrix(): mat4 {
+    return this.modelMatrix;
+  }
+
   update(): void {
     mat4.identity(this.positionMatrix);
     mat4.identity(this.rotationMatrix);

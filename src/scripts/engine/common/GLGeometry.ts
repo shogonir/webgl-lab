@@ -2,6 +2,25 @@ import { GLAttribute } from "./GLAttribute";
 import { GLBuffer } from "./GLBuffer";
 import { GLIndexBuffer } from "./GLIndexBuffer";
 
+type GLAttributeFixedParameter = {
+  normalized: boolean;
+  size: number;
+};
+
+type GLAttributeParameterMapType = {
+  position: GLAttributeFixedParameter;
+  normal: GLAttributeFixedParameter;
+  uv: GLAttributeFixedParameter;
+};
+
+const GLAttributeParameterMap: GLAttributeParameterMapType = {
+  position: {normalized: false, size: 3},
+  normal: {normalized: false, size: 3},
+  uv: {normalized: false, size: 2},
+};
+
+type GLAttributeParameterKey = keyof GLAttributeParameterMapType;
+
 class GLGeometry {
   readonly vertexBuffer: GLBuffer;
   readonly indexBuffer: GLIndexBuffer;
@@ -18,15 +37,23 @@ class GLGeometry {
     gl: WebGL2RenderingContext,
     program: WebGLProgram,
     vertices: number[],
-    indices: number[]
+    indices: number[],
+    attributeKeys: GLAttributeParameterKey[] = ['position']
   ): GLGeometry | undefined {
-    const positionAttribute = GLAttribute.create(gl, program, false, 0, 3, 'position');
-    if (!positionAttribute) {
-      console.error('[ERRPR] GLGeometry.create() could not create GLAttribute');
-      return undefined;
+    let offset = 0;
+    const glAttributes: GLAttribute[] = [];
+    for (const name of attributeKeys) {
+      const fixed = GLAttributeParameterMap[name];
+      const attribute = GLAttribute.create(gl, program, fixed.normalized, offset, fixed.size, name);
+      if (!attribute) {
+        console.error('[ERRPR] GLGeometry.create() could not create GLAttribute');
+        return undefined;
+      }
+      glAttributes.push(attribute);
+      offset += fixed.size;
     }
 
-    const vertexBuffer = GLBuffer.create(gl, vertices, 3, [positionAttribute]);
+    const vertexBuffer = GLBuffer.create(gl, vertices, glAttributes);
     if (!vertexBuffer) {
       console.error('[ERROR] GLGeometry.create() could not create GLBuffer');
       return undefined;
@@ -54,4 +81,4 @@ class GLGeometry {
   }
 }
 
-export {GLGeometry};
+export {GLGeometry, GLAttributeParameterKey};

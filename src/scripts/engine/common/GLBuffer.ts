@@ -21,7 +21,6 @@ class GLBuffer {
   static create(
     gl: WebGL2RenderingContext,
     array: number[],
-    stride: number,
     attributes: GLAttribute[]
   ): GLBuffer | undefined {
     const buffer = gl.createBuffer();
@@ -30,6 +29,11 @@ class GLBuffer {
       return undefined;
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+
+    let stride = 0;
+    for (const attribute of attributes) {
+      stride += attribute.size;
+    }
 
     const strideBytes = attributes.length === 1 ? 0 : stride * Float32Array.BYTES_PER_ELEMENT;
     for (const a of attributes) {

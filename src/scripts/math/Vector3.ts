@@ -55,6 +55,24 @@ class Vector3 {
     return this.x === 0 && this.y === 0 && this.z === 0;
   }
 
+  add(other: Vector3): void {
+    this.x += other.x;
+    this.y += other.y;
+    this.z += other.z;
+  }
+
+  addValues(x: number, y: number, z: number): void {
+    this.x += x;
+    this.y += y;
+    this.z += z;
+  }
+
+  multiply(value: number): void {
+    this.x *= value;
+    this.y *= value;
+    this.z *= value;
+  }
+
   divide(value: number): void {
     this.x /= value;
     this.y /= value;
