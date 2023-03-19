@@ -27,10 +27,10 @@ class DemoListScene implements Scene {
   constructor(labStatus: LabStatus) {
     this.degree = 0;
     
-    this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 30 * MathUtil.deg2rad, 1);
+    this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 30 * MathUtil.deg2rad, 2);
     const clientSize = labStatus.clientSize;
     const aspect = clientSize.getWidth() / clientSize.getHeight();
-    const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * MathUtil.deg2rad, aspect, 0.1, 2.0);
+    const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * MathUtil.deg2rad, aspect, 0.1, 4.0);
     this.camera = camera;
 
     const canvas = document.createElement('canvas');

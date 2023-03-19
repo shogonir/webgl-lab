@@ -197,20 +197,6 @@ class PerlineWaveProgram implements Program {
     gl.useProgram(program);
 
     const geometry = object3D.geometry;
-
-    const side = WAVE_SIDE;
-    const width = 1.0;
-    const halfWidth = width / 2.0;
-    const vertices: number[] = new Array(side * side * 3);
-    for (let y = 0; y < side; y++) {
-      for (let x = 0; x < side; x++) {
-        vertices[(y * side + x) * 3 + 0] = width * x / (side - 1) - halfWidth;
-        vertices[(y * side + x) * 3 + 1] = halfWidth - width * y / (side - 1);
-        vertices[(y * side + x) * 3 + 2] = 0;
-      }
-    }
-    geometry.setVertices(vertices);
-
     if (!geometry.isDrawable()) {
       geometry.prepare(gl, program);
     }

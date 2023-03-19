@@ -1,5 +1,6 @@
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";
 import { Geometry } from "../engine/Geometry";
+import { PlaneGeometry } from "../engine/geometry/PlaneGeometry";
 import { Object3D } from "../engine/Object3D";
 import { PerlinWaveMaterial } from "../engine/program/perlinWave/PerlinWaveMaterial";
 import { PerlineWaveProgram, WAVE_SIDE } from "../engine/program/perlinWave/PerlinWaveProgram";
@@ -26,35 +27,9 @@ class PerlinWaveScene implements Scene {
 
     const side = WAVE_SIDE;
     const width = 1.0;
-    const halfWidth = width / 2.0;
-    const vertices: number[] = new Array(side * side * 3);
-    const indices: number[] = new Array((side - 1) * (side - 1) * 6);
-    for (let y = 0; y < side; y++) {
-      for (let x = 0; x < side; x++) {
-        vertices[(y * side + x) * 3 + 0] = width * x / (side - 1) - halfWidth;
-        vertices[(y * side + x) * 3 + 1] = halfWidth - width * y / (side - 1);
-        vertices[(y * side + x) * 3 + 2] = 0.0;
-
-        if (x === 0 || y === 0) {
-          continue;
-        }
-
-        const current = y * side + x;
-        const left = current - 1;
-        const up = current - side;
-        const upLeft = current - side - 1;
-        const index = ((y - 1) * side + (x - 1)) * 6;
-        indices[index + 0] = upLeft;
-        indices[index + 1] = left;
-        indices[index + 2] = current;
-        indices[index + 3] = current;
-        indices[index + 4] = up;
-        indices[index + 5] = upLeft;
-      }
-    }
     
     const transform = Transform.identity();
-    const geometry = new Geometry(vertices, indices);
+    const geometry = PlaneGeometry.create(width, side, ['position']);
     const material = new PerlinWaveMaterial(0);
     this.waveObject = new Object3D(transform, geometry, material);
 
