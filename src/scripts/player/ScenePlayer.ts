@@ -2,6 +2,7 @@ import { LabStatus } from "../model/LabStatus";
 import { DemoListScene } from "../scene/DemoListScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
+import { RayMarchingSpheresScene } from "../scene/RayMarchingSpheresScene";
 import { Scene } from "../scene/Scene";
 import { TextureMappingScene } from "../scene/TextureMappingScene";
 
@@ -17,6 +18,7 @@ class ScenePlayer {
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
       new PerlinWaveScene(labStatus),
+      new RayMarchingSpheresScene(labStatus),
     ];
     this.sceneIndex = 0;
 
