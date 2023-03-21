@@ -1,8 +1,8 @@
 import { LabStatus } from "../model/LabStatus";
 import { DemoListScene } from "../scene/DemoListScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
+import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
-import { RayMarchingSpheresScene } from "../scene/RayMarchingSpheresScene";
 import { Scene } from "../scene/Scene";
 import { TextureMappingScene } from "../scene/TextureMappingScene";
 
@@ -18,7 +18,7 @@ class ScenePlayer {
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
       new PerlinWaveScene(labStatus),
-      new RayMarchingSpheresScene(labStatus),
+      new MandelbrotSetScene(labStatus),
     ];
     this.sceneIndex = 0;
 
@@ -32,11 +32,21 @@ class ScenePlayer {
       const index = this.sceneIndex;
       const length = this.sceneList.length;
       if (event.key === 'ArrowRight') {
-        this.sceneIndex += index === length - 1 ? 0 : 1;
+        if (index === length - 1) {
+          return;
+        }
+        this.sceneList[this.sceneIndex].teardown();
+        this.sceneIndex += 1;
+        this.sceneList[this.sceneIndex].setup();
         return;
       }
       if (event.key === 'ArrowLeft') {
-        this.sceneIndex -= index === 0 ? 0 : 1;
+        if (index === 0) {
+          return;
+        }
+        this.sceneList[this.sceneIndex].teardown();
+        this.sceneIndex -= 1;
+        this.sceneList[this.sceneIndex].setup();
         return;
       }
     });

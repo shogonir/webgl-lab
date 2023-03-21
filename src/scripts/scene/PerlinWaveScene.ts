@@ -1,9 +1,8 @@
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";
-import { Geometry } from "../engine/Geometry";
 import { PlaneGeometry } from "../engine/geometry/PlaneGeometry";
 import { Object3D } from "../engine/Object3D";
 import { PerlinWaveMaterial } from "../engine/program/perlinWave/PerlinWaveMaterial";
-import { PerlineWaveProgram, WAVE_SIDE } from "../engine/program/perlinWave/PerlinWaveProgram";
+import { WAVE_SIDE } from "../engine/program/perlinWave/PerlinWaveProgram";
 import { ProgramMap } from "../engine/program/ProgramMap";
 import { Transform } from "../engine/Transform";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";

@@ -3,7 +3,7 @@ import { Object3D } from "../../Object3D";
 import { Program } from "../../Program";
 import { GLCamera } from "../../common/GLCamera";
 import { GLProgram } from "../../common/GLProgram";
-import { RayMarchingSpheresMaterial } from "./RayMarchingSpheresMaterial";
+import { MandelbrotSetMaterial } from "./MandelbrotSetMaterial";
 
 const vertexShaderSource = `#version 300 es
 in vec3 position;
@@ -26,6 +26,9 @@ precision highp float;
 
 in vec2 passUv;
 
+uniform float zoomRate;
+uniform vec2 center;
+
 out vec4 fragmentColor;
 
 float isMandelbrot(vec2 c, int iterations) {
@@ -43,10 +46,12 @@ float isMandelbrot(vec2 c, int iterations) {
 }
 
 void main() {
-  float min = -2.0;
-  float max = 2.0;
-  float x = passUv.x * (max - min) + min;
-  float y = passUv.y * (min - max) + max;
+  float minX = center.x - (2.0 / zoomRate);
+  float maxX = center.x + (2.0 / zoomRate);
+  float minY = center.y - (2.0 / zoomRate);
+  float maxY = center.y + (2.0 / zoomRate);
+  float x = passUv.x * (maxX - minX) + minX;
+  float y = passUv.y * (minY - maxY) + maxY;
   
   float ratio = isMandelbrot(vec2(x, y), 150);
   
@@ -54,7 +59,7 @@ void main() {
 }
 `;
 
-class RayMarchingSpheresProgram implements Program {
+class MandelbrotSetProgram implements Program {
   readonly gl: WebGL2RenderingContext;
   readonly glProgram: GLProgram;
   readonly glCamera: GLCamera;
@@ -71,7 +76,7 @@ class RayMarchingSpheresProgram implements Program {
 
   static create(
     gl: WebGL2RenderingContext
-  ): RayMarchingSpheresProgram | undefined {
+  ): MandelbrotSetProgram | undefined {
     const glProgram = GLProgram.create(gl, vertexShaderSource, fragmentShaderSource, 'RayMarchingSpheresProgram');
     if (!glProgram) {
       console.error('[ERROR] RayMarchingSpheresProgram.create() could not create GLProgram');
@@ -84,7 +89,7 @@ class RayMarchingSpheresProgram implements Program {
       return undefined;
     }
 
-    return new RayMarchingSpheresProgram(gl, glProgram, glCamera);
+    return new MandelbrotSetProgram(gl, glProgram, glCamera);
   }
 
   updateCamera(viewMatrix: mat4, projectionMatrix: mat4): void {
@@ -95,7 +100,7 @@ class RayMarchingSpheresProgram implements Program {
     this.glCamera.update(gl, viewMatrix, projectionMatrix);
   }
 
-  draw(object3D: Object3D<RayMarchingSpheresMaterial>): void {
+  draw(object3D: Object3D<MandelbrotSetMaterial>): void {
     const gl = this.gl;
     const program = this.glProgram.program;
     gl.useProgram(program);
@@ -127,4 +132,4 @@ class RayMarchingSpheresProgram implements Program {
   }
 }
 
-export {RayMarchingSpheresProgram};
+export {MandelbrotSetProgram};

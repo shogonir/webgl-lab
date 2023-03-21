@@ -3,17 +3,27 @@ import { Transform } from "../engine/Transform";
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";
 import { QuadGeometry } from "../engine/geometry/QuadGeometry";
 import { ProgramMap } from "../engine/program/ProgramMap";
-import { RayMarchingSpheresMaterial } from "../engine/program/rayMarchingSpheres/RayMarchingSpheresMaterial";
+import { MandelbrotSetMaterial } from "../engine/program/rayMarchingSpheres/MandelbrotSetMaterial";
 import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
+import { Vector2 } from "../math/Vector2";
 import { LabStatus } from "../model/LabStatus";
 import { Scene } from "./Scene";
 
-class RayMarchingSpheresScene implements Scene {
+type WheelListener = (event: WheelEvent) => void;
+type MouseListener = (event: MouseEvent) => void;
+
+class MandelbrotSetScene implements Scene {
   private polar: PolarCoordinate3;
   private camera: PerspectiveCamera;
   
-  private object3D: Object3D<RayMarchingSpheresMaterial>;
+  private object3D: Object3D<MandelbrotSetMaterial>;
+
+  private isMouseDown: boolean;
+  private onWheel: WheelListener;
+  private onMouseDown: MouseListener;
+  private onMouseUp: MouseListener;
+  private onMouseMove: MouseListener;
 
   constructor(labStatus: LabStatus) {
     this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 0.001 * MathUtil.deg2rad, 1);
@@ -23,17 +33,38 @@ class RayMarchingSpheresScene implements Scene {
 
     const transform = Transform.identity();
     const geometry = QuadGeometry.create(1.0, ['position', 'uv']);
-    const material = new RayMarchingSpheresMaterial();
+    const material = new MandelbrotSetMaterial(1.0, Vector2.zero());
     this.object3D = new Object3D(transform, geometry, material);
+
+    this.isMouseDown = false;
+    this.onWheel = (event: WheelEvent) => {
+      this.object3D.material.zoomRate -= 0.003 * event.deltaY;
+    };
+    this.onMouseDown = (event: MouseEvent) => {
+      this.isMouseDown = true;
+    }
+    this.onMouseUp = (event: MouseEvent) => {
+      this.isMouseDown = false;
+    }
+    this.onMouseMove = (event: MouseEvent) => {
+      if (this.isMouseDown) {
+        this.object3D.material.center.x -= 0.001 * event.movementX;
+        this.object3D.material.center.y += 0.001 * event.movementY;
+      }
+    }
   }
 
   setup(): void {
-    
+    document.addEventListener('wheel', this.onWheel);
+    document.addEventListener('mousedown', this.onMouseDown);
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('mousemove', this.onMouseMove);
   }
 
   update(labStatus: LabStatus): void {
     const gl = labStatus.gl;
     const program = ProgramMap.rayMarchingSpheres;
+    gl.useProgram(program.glProgram.program);
     
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.clearDepth(1.0);
@@ -55,8 +86,11 @@ class RayMarchingSpheresScene implements Scene {
   }
 
   teardown(): void {
-    
+    document.removeEventListener('wheel', this.onWheel);
+    document.removeEventListener('mousedown', this.onMouseDown);
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('mousemove', this.onMouseMove);
   }
 }
 
-export {RayMarchingSpheresScene};
+export {MandelbrotSetScene};
