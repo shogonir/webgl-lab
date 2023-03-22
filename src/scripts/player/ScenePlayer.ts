@@ -1,5 +1,6 @@
 import { LabStatus } from "../model/LabStatus";
 import { DemoListScene } from "../scene/DemoListScene";
+import { FallingLeavesScene } from "../scene/FallingLeavesScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
@@ -14,6 +15,7 @@ class ScenePlayer {
   constructor(labStatus: LabStatus) {
     this.labStatus = labStatus;
     this.sceneList = [
+      new FallingLeavesScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),

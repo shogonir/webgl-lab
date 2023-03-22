@@ -1,3 +1,4 @@
+import { FallingLeavesProgram } from "./fallingLeaves/FallingLeavesProgram";
 import { PerlineWaveProgram } from "./perlinWave/PerlinWaveProgram";
 import { MandelbrotSetProgram } from "./rayMarchingSpheres/MandelbrotSetProgram";
 import { SingleColorProgram } from "./singleColor/SingleColorProgram";
@@ -8,6 +9,7 @@ class ProgramMap {
   private static _textureProgram: TextureProgram;
   private static _perlinWaveProgram: PerlineWaveProgram;
   private static _mandelbrotSet: MandelbrotSetProgram;
+  private static _fallingLeaves: FallingLeavesProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -25,6 +27,10 @@ class ProgramMap {
     return ProgramMap._mandelbrotSet;
   }
 
+  static get fallingLeaves(): FallingLeavesProgram {
+    return ProgramMap._fallingLeaves;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -33,12 +39,14 @@ class ProgramMap {
     const textureProgram = TextureProgram.create(gl);
     const perlinWaveProgram = PerlineWaveProgram.create(gl);
     const rayMarchingSpheres = MandelbrotSetProgram.create(gl);
+    const fallingLeaves = FallingLeavesProgram.create(gl);
 
     if (
       !singleColorProgram ||
       !textureProgram ||
       !perlinWaveProgram ||
-      !rayMarchingSpheres
+      !rayMarchingSpheres ||
+      !fallingLeaves
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -48,6 +56,7 @@ class ProgramMap {
     ProgramMap._textureProgram = textureProgram;
     ProgramMap._perlinWaveProgram = perlinWaveProgram;
     ProgramMap._mandelbrotSet = rayMarchingSpheres;
+    ProgramMap._fallingLeaves = fallingLeaves;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);

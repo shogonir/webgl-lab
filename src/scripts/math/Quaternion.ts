@@ -8,12 +8,15 @@ class Quaternion {
   private d: number;
 
   private static temporary: Quaternion = Quaternion.identity();
+  private mat: mat4;
 
   private constructor(a: number, b: number, c: number, d: number) {
     this.a = a;
     this.b = b;
     this.c = c;
     this.d = d;
+
+    this.mat = mat4.identity(mat4.create());
   }
 
   static identity(): Quaternion {
@@ -63,6 +66,22 @@ class Quaternion {
 
   norm(): number {
     return Math.sqrt(this.squaredNorm());
+  }
+
+  getAsMat4(): mat4 {
+    const s = 2 / this.norm();
+    const a = this.a;
+    const b = this.b;
+    const c = this.c;
+    const d = this.d;
+    mat4.set(
+      this.mat, 
+      1 - s * (c**2 + d**2) , s * (b * c - a * d)   , s * (b * d + a * c)   , 0,
+      s * (b * c + d * a)   , 1 - s * (b**2 + d**2) , s * (c * d - a * b)   , 0,
+      s * (b * d - a * c)   , s * (c * d + a * b)   , 1 - s * (b**2 + c**2) , 0,
+      0                     , 0                     , 0                     , 1
+    );
+    return this.mat;
   }
 
   toMat4(): mat4 {

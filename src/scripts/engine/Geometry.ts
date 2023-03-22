@@ -30,6 +30,11 @@ class Geometry {
     this.needsApplyVertices = true;
   }
 
+  setVerticesValue(value: number, index: number): void {
+    this.vertices[index] = value;
+    this.needsApplyVertices = true;
+  }
+
   isDrawable(): boolean {
     return this.glGeometry ? true : false;
   }

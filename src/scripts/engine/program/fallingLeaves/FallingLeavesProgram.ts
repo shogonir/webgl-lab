@@ -1,8 +1,9 @@
 import { mat4 } from "gl-matrix";
+import { Program } from "../../Program";
 import { GLCamera } from "../../common/GLCamera";
 import { GLProgram } from "../../common/GLProgram";
 import { Object3D } from "../../Object3D";
-import { TextureMaterial } from "./TextureMaterial";
+import { FallingLeavesMaterial } from "./FallingLeavesMaterial";
 
 const vertexShaderSource = `#version 300 es
 in vec3 position;
@@ -12,12 +13,16 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform mat4 rotation;
+
 out vec2 passUv;
 
 void main() {
   passUv = uv;
-  gl_Position = projection * view * model * vec4(position, 1.0);
-}`;
+  vec3 offset = (rotation * vec4(-0.1 * uv, 0.0, 0.0)).xyz;
+  gl_Position = projection * view * (model * vec4(position, 1.0) + vec4(offset, 0.0));
+}
+`;
 
 const fragmentShaderSource = `#version 300 es
 precision mediump float;
@@ -30,9 +35,10 @@ out vec4 fragmentColor;
 
 void main() {
   fragmentColor = texture(tex, passUv);
-}`;
+}
+`;
 
-class TextureProgram {
+class FallingLeavesProgram implements Program {
   readonly gl: WebGL2RenderingContext;
   readonly glProgram: GLProgram;
   readonly glCamera: GLCamera;
@@ -47,22 +53,22 @@ class TextureProgram {
     this.glCamera = glCamera;
   }
 
-  static create (
+  static create(
     gl: WebGL2RenderingContext
-  ): TextureProgram | undefined {
-    const glProgram = GLProgram.create(gl, vertexShaderSource, fragmentShaderSource, 'TextureProgram');
+  ): FallingLeavesProgram | undefined {
+    const glProgram = GLProgram.create(gl, vertexShaderSource, fragmentShaderSource, 'FallingLeavesProgram');
     if (!glProgram) {
-      console.error('[ERROR] TextureProgram.create() could not create GLProgram');
+      console.error('[ERROR] FallingLeavesProgram.create() could not create GLProgram');
       return undefined;
     }
 
     const glCamera = GLCamera.create(gl, glProgram.program);
     if (!glCamera) {
-      console.error('[ERROR] TextureProgram.create() could not create GLCamera');
+      console.error('[ERROR] FallingLeavesProgram.create() could not create GLCamera');
       return undefined;
     }
 
-    return new TextureProgram(gl, glProgram, glCamera);
+    return new FallingLeavesProgram(gl, glProgram, glCamera);
   }
 
   updateCamera(viewMatrix: mat4, projectionMatrix: mat4): void {
@@ -73,10 +79,9 @@ class TextureProgram {
     this.glCamera.update(gl, viewMatrix, projectionMatrix);
   }
 
-  draw(object3D: Object3D<TextureMaterial>): void {
+  draw(object3D: Object3D<FallingLeavesMaterial>): void {
     const gl = this.gl;
     const program = this.glProgram.program;
-
     gl.useProgram(program);
 
     const geometry = object3D.geometry;
@@ -99,10 +104,11 @@ class TextureProgram {
     }
     material.bind(gl);
 
-    gl.disable(gl.DEPTH_TEST);
+    gl.enable(gl.DEPTH_TEST);
+    gl.disable(gl.CULL_FACE);
 
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
   }
 }
 
-export {TextureProgram};
+export {FallingLeavesProgram};
