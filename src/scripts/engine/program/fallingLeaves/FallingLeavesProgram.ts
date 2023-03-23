@@ -8,6 +8,7 @@ import { FallingLeavesMaterial } from "./FallingLeavesMaterial";
 const vertexShaderSource = `#version 300 es
 in vec3 position;
 in vec2 uv;
+in float vertexIndex;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -19,7 +20,12 @@ out vec2 passUv;
 
 void main() {
   passUv = uv;
-  vec3 offset = (rotation * vec4(-0.1 * uv, 0.0, 0.0)).xyz;
+
+  int localIndex = int(round(vertexIndex)) % 4;
+  float x = localIndex % 2 == 0 ? 0.0 : 1.0;
+  float y = localIndex <= 1 ? 0.0 : 1.0;
+  
+  vec3 offset = (rotation * vec4(0.1 * uv, 0.0, 0.0)).xyz;
   gl_Position = projection * view * (model * vec4(position, 1.0) + vec4(offset, 0.0));
 }
 `;
@@ -34,7 +40,8 @@ uniform sampler2D tex;
 out vec4 fragmentColor;
 
 void main() {
-  fragmentColor = texture(tex, passUv);
+  vec4 color = vec4(0.0, 0.5, 0.0, 1.0);
+  fragmentColor = texture(tex, passUv) * color;
 }
 `;
 

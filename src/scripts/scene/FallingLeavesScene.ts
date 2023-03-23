@@ -32,18 +32,22 @@ class FallingLeavesScene implements Scene {
     const context = canvas.getContext('2d');
     if (context) {
       const halfSide = side / 2;
-      context.fillStyle = 'black';
-      context.fillRect(0, 0, halfSide, halfSide);
-      context.fillStyle = 'red';
-      context.fillRect(halfSide, 0, halfSide, halfSide);
-      context.fillStyle = 'green';
-      context.fillRect(0, halfSide, halfSide, halfSide);
-      context.fillStyle = 'blue';
-      context.fillRect(halfSide, halfSide, halfSide, halfSide);
+      context.fillStyle = 'white';
+      context.moveTo(0, 0);
+      context.lineTo(halfSide, 0);
+      context.arc(halfSide, halfSide, halfSide, -MathUtil.halfPi, 0.0);
+      context.lineTo(side, halfSide * 3 / 2);
+      context.lineTo(halfSide * 3 / 2, halfSide * 3 / 2);
+      context.lineTo(side, side);
+      context.lineTo(halfSide, side);
+      context.arc(halfSide, halfSide, halfSide, MathUtil.halfPi, Math.PI);
+      context.lineTo(0, 0);
+      context.fill();
     }
+    document.body.appendChild(canvas);
 
     const transform = Transform.identity();
-    const geometry = SplitQuadsGeometry.create(QUAD_NUMBER, ['position', 'uv']);
+    const geometry = SplitQuadsGeometry.create(QUAD_NUMBER, ['position', 'uv', 'vertexIndex']);
     const material = new FallingLeavesMaterial(canvas, Quaternion.identity());
     this.object3D = new Object3D(transform, geometry, material);
   }
@@ -54,10 +58,11 @@ class FallingLeavesScene implements Scene {
 
   private updateVertices(): void {
     const geometry = this.object3D.geometry;
+    const ratio = 1.0;
     for (let index = 0; index < QUAD_NUMBER; index++) {
-      const x = 0.1 * (Math.random() - 0.5);
-      const y = 0.1 * (Math.random() - 0.5);
-      const z = 0.1 * (Math.random() - 0.5);
+      const x = ratio * (Math.random() - 0.5);
+      const y = ratio * (Math.random() - 0.5);
+      const z = ratio * (Math.random() - 0.5);
       for (let vertexIndex = 0; vertexIndex < 4; vertexIndex++) {
         const i = index * 20 + vertexIndex * 5;
         geometry.setVerticesValue(x, i + 0);
@@ -84,7 +89,10 @@ class FallingLeavesScene implements Scene {
     const projectionMatrix = this.camera.getProjectionMatrix();
     program.updateCamera(viewMatrix, projectionMatrix);
 
-    this.updateVertices();
+    // this.updateVertices();
+    this.object3D.material.rotation.rotateX(0.001 * Math.PI);
+    this.object3D.material.rotation.rotateY(0.002 * Math.PI);
+    this.object3D.material.rotation.rotateZ(0.003 * Math.PI);
 
     program.draw(this.object3D);
 

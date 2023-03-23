@@ -11,12 +11,14 @@ type GLAttributeParameterMapType = {
   position: GLAttributeFixedParameter;
   normal: GLAttributeFixedParameter;
   uv: GLAttributeFixedParameter;
+  vertexIndex: GLAttributeFixedParameter;
 };
 
 const GLAttributeParameterMap: GLAttributeParameterMapType = {
   position: {normalized: false, size: 3},
   normal: {normalized: false, size: 3},
   uv: {normalized: false, size: 2},
+  vertexIndex: {normalized: false, size: 1},
 };
 
 type GLAttributeParameterKey = keyof GLAttributeParameterMapType;
