@@ -15,12 +15,12 @@ class ScenePlayer {
   constructor(labStatus: LabStatus) {
     this.labStatus = labStatus;
     this.sceneList = [
-      new FallingLeavesScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
       new PerlinWaveScene(labStatus),
       new MandelbrotSetScene(labStatus),
+      new FallingLeavesScene(labStatus),
     ];
     this.sceneIndex = 0;
 
