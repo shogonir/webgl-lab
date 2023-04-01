@@ -3,6 +3,7 @@ import { DemoListScene } from "../scene/DemoListScene";
 import { FallingLeavesScene } from "../scene/FallingLeavesScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
+import { ParticleWarpScene } from "../scene/ParticleWarpScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { Scene } from "../scene/Scene";
 import { TextureMappingScene } from "../scene/TextureMappingScene";
@@ -21,6 +22,7 @@ class ScenePlayer {
       new PerlinWaveScene(labStatus),
       new MandelbrotSetScene(labStatus),
       new FallingLeavesScene(labStatus),
+      new ParticleWarpScene(labStatus),
     ];
     this.sceneIndex = 0;
 

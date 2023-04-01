@@ -125,4 +125,4 @@ class TextureMappingScene implements Scene {
   }
 }
 
-export {TextureMappingScene};
+export {TextureMappingScene, SNSS};

@@ -1,4 +1,3 @@
-import { GLAttribute } from "../../common/GLAttribute";
 import { GLTexture } from "../../common/GLTexture";
 import { Material } from "../../Material";
 
@@ -23,12 +22,6 @@ class TextureMaterial implements Material {
     const glTexture = GLTexture.create(gl, this.image);
     if (!glTexture) {
       console.error('[ERROR] TextureMaterial.prepare() could not create GLTexture');
-      return;
-    }
-
-    const attribute = GLAttribute.create(gl, program, false, 0, 2, 'uv');
-    if (!attribute) {
-      console.error('[ERROR] TextureMaterial.prepare() could not create GLAttribute');
       return;
     }
 
