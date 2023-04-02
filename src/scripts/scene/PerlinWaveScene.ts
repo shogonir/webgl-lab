@@ -5,6 +5,7 @@ import { PerlinWaveMaterial } from "../engine/program/perlinWave/PerlinWaveMater
 import { WAVE_SIDE } from "../engine/program/perlinWave/PerlinWaveProgram";
 import { ProgramMap } from "../engine/program/ProgramMap";
 import { Transform } from "../engine/Transform";
+import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { LabStatus } from "../model/LabStatus";
 import { Scene } from "./Scene";
@@ -18,10 +19,9 @@ class PerlinWaveScene implements Scene {
   private startTime: number;
 
   constructor(labStatus: LabStatus) {
-    const deg2rad = Math.PI / 180.0;
-    this.polar = new PolarCoordinate3(0, 45 * deg2rad, 1);
+    this.polar = new PolarCoordinate3(0, 45 * MathUtil.deg2rad, 1);
     const aspect = labStatus.clientSize.getWidth() / labStatus.clientSize.getHeight();
-    const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * deg2rad, aspect, 0.1, 2);
+    const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * MathUtil.deg2rad, aspect, 0.1, 2);
     this.camera = camera;
 
     const side = WAVE_SIDE;
