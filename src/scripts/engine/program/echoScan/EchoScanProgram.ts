@@ -9,6 +9,7 @@ const vertexShaderSource = `#version 300 es
 #define M_PI 3.14159265358979323846
 
 in vec3 position;
+in vec2 wireframeUv;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -18,6 +19,7 @@ uniform float time;
 
 out float passValue;
 out vec4 passPosition;
+out vec2 passWireframeUv;
 
 vec4 _permute(vec4 x) { return mod(((x * 34.0) + 1.0) * x, 289.0); }
 vec4 _taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
@@ -131,6 +133,8 @@ void main() {
   float perlinValue = gln_perlin(vec3(coord, 0.0));
 
   passPosition = vec4(position, 1.0);
+  passWireframeUv = wireframeUv;
+
   gl_Position = projection * view * model * vec4(position.xy, 0.2 * perlinValue, 1.0);
   
   passValue = 0.5 * perlinValue;
@@ -142,19 +146,23 @@ precision highp float;
 
 in float passValue;
 in vec4 passPosition;
+in vec2 passWireframeUv;
 
 uniform float time;
 
 out vec4 fragmentColor;
 
 void main() {
-  float distance = mod(time / 2000.0, 1.0);
+  float distance = mod(time / 5000.0, 1.0);
 
   vec3 p = passPosition.xyz;
   float d = sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
   float brightness = max(1.0 - abs(distance - d) * 100.0, 0.0);
 
-  fragmentColor = vec4(0.0, 0.5 + passValue * 0.5 + brightness, 1.0, 1.0);
+  float wireRatio = (d > distance) ? 0.0 : max(1.0 - abs(distance - d) * 10.0, 0.0);
+  float wire = ((passWireframeUv.x < 0.1 || passWireframeUv.y < 0.1) ? 1.0 : 0.0) * wireRatio;
+
+  fragmentColor = vec4(0.0, 0.5 + passValue * 0.5 + brightness + wire, 1.0, 1.0);
 }
 `;
 

@@ -24,7 +24,7 @@ class EchoScanScene implements Scene {
     this.camera = PerspectiveCamera.createWithPolar(this.polar, 90 * MathUtil.deg2rad, aspect, 0.1, 2.0);
 
     const transform = Transform.identity();
-    const geometry = PlaneGeometry.create(1.0, 100, ['position']);
+    const geometry = PlaneGeometry.create(1.0, 100, ['position', 'wireframeUv']);
     const material = new EchoScanMaterial(0.0);
     this.object3D = new Object3D(transform, geometry, material);
 

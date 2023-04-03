@@ -1,6 +1,6 @@
 import { Geometry } from "../Geometry";
 
-type AcceptableAttributeKeys = 'position' | 'uv' | 'normal';
+type AcceptableAttributeKeys = 'position' | 'uv' | 'normal' | 'wireframeUv';
 
 class PlaneGeometry {
 
@@ -27,6 +27,10 @@ class PlaneGeometry {
             vertices.push(u, v);
           } else if (key === 'normal') {
             vertices.push(...upVector);
+          } else if (key === 'wireframeUv') {
+            const u = xIndex % 2;
+            const v = yIndex % 2;
+            vertices.push(u, v);
           }
         }
 
