@@ -7,6 +7,7 @@ import { ParticleWarpMaterial } from "../engine/program/particleWarp/ParticleWar
 import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { LabStatus } from "../model/LabStatus";
+import { MouseEventUtil } from "../model/MouseEventUtil";
 import { Scene } from "./Scene";
 import { SNSS } from "./TextureMappingScene";
 
@@ -17,6 +18,8 @@ class ParticleWarpScene implements Scene {
   private object3D?: Object3D<ParticleWarpMaterial>;
 
   private startTime: number;
+
+  private mouseEventMap: Map<keyof DocumentEventMap, EventListener>;
 
   constructor(labStatus: LabStatus) {
     this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 10 * MathUtil.deg2rad, 1.0);
@@ -38,10 +41,14 @@ class ParticleWarpScene implements Scene {
     image.src = SNSS;
 
     this.startTime = performance.now();
+
+    this.mouseEventMap = MouseEventUtil.moveCameraOnPolar(this.camera, this.polar);
   }
 
   setup(): void {
-    
+    for (const [key, value] of this.mouseEventMap) {
+      document.addEventListener(key, value);
+    }
   }
 
   update(labStatus: LabStatus): void {
@@ -69,7 +76,9 @@ class ParticleWarpScene implements Scene {
   }
 
   teardown(): void {
-    
+    for (const [key, value] of this.mouseEventMap) {
+      document.removeEventListener(key, value);
+    }
   }
 }
 

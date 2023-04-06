@@ -7,6 +7,9 @@ import { SingleColorMaterial } from "./SingleColorMaterial";
 import { GLUniformMat4 } from "../../common/uniform/GLUniformMat4";
 import { GLUniformFloat3 } from "../../common/uniform/GLUniformFloat3";
 import { Vector3 } from "../../../math/Vector3";
+import { GLFramebuffer } from "../../common/GLFramebuffer";
+import { RenderTarget } from "../../../model/RenderTarget";
+import { ScenePlayer } from "../../../player/ScenePlayer";
 
 const vertexShaderSource = `#version 300 es
 in vec3 position;
@@ -139,7 +142,7 @@ class SingleColorProgram implements Program {
     this.glCamera.update(gl, viewMatrix, projectionMatrix);
   }
 
-  draw(object3D: Object3D<SingleColorMaterial>): void {
+  draw(object3D: Object3D<SingleColorMaterial>, renderTarget?: RenderTarget): void {
     const gl = this.gl;
     const program = this.glProgram.program;
 
@@ -176,10 +179,24 @@ class SingleColorProgram implements Program {
     this.eyeUniform.setVector4(this.eyeDirection);
     this.eyeUniform.uniform(gl);
 
+    if (!renderTarget || renderTarget.type === 'default') {
+      const clientSize = ScenePlayer.defaultRenderTarget.clientSize;
+      gl.viewport(0, 0, clientSize.width, clientSize.height);
+    } else if (renderTarget.type === 'framebuffer') {
+      const target = renderTarget.target;
+      const clientSize = renderTarget.clientSize;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, target.framebuffer);
+      gl.viewport(0, 0, clientSize.width, clientSize.height);
+    }
+
     gl.enable(gl.DEPTH_TEST);
     gl.enable(gl.CULL_FACE);
 
     gl.drawElements(gl.TRIANGLES, geometry.getIndicesLength(), gl.UNSIGNED_SHORT, 0);
+
+    if (renderTarget && renderTarget.type === 'framebuffer') {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    }
   }
 }
 

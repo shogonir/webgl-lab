@@ -1,3 +1,4 @@
+import { MathUtil } from "./MathUtil";
 import { Vector3 } from "./Vector3";
 
 class PolarCoordinate3 {
@@ -18,7 +19,7 @@ class PolarCoordinate3 {
   }
 
   set theta(value: number) {
-    this._theta = value;
+    this._theta = MathUtil.clamp(value, 0.0, Math.PI);
   }
 
   get radius(): number {

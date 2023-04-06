@@ -46,7 +46,6 @@ class FallingLeavesScene implements Scene {
       context.lineTo(0, 0);
       context.fill();
     }
-    document.body.appendChild(canvas);
 
     const transform = Transform.identity();
     const geometry = SplitQuadsGeometry.create(QUAD_NUMBER, ['position', 'uv', 'vertexIndex']);

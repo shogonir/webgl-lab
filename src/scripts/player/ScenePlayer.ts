@@ -1,4 +1,5 @@
 import { LabStatus } from "../model/LabStatus";
+import { DefaultRenderTarget } from "../model/RenderTarget";
 import { DemoListScene } from "../scene/DemoListScene";
 import { EchoScanScene } from "../scene/EchoScanScene";
 import { FallingLeavesScene } from "../scene/FallingLeavesScene";
@@ -6,18 +7,29 @@ import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
 import { ParticleWarpScene } from "../scene/ParticleWarpScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
+import { ProjectorScreenScene } from "../scene/ProjectorScreenScene";
 import { Scene } from "../scene/Scene";
 import { TextureMappingScene } from "../scene/TextureMappingScene";
 
 class ScenePlayer {
+  static defaultRenderTarget: DefaultRenderTarget;
+
   private labStatus: LabStatus;
   private sceneList: Scene[];
   private sceneIndex: number;
 
   constructor(labStatus: LabStatus) {
+    ScenePlayer.defaultRenderTarget = {
+      type: 'default',
+      clientSize: {
+        width: labStatus.clientSize.getWidth(),
+        height: labStatus.clientSize.getHeight(),
+      },
+    };
+
     this.labStatus = labStatus;
     this.sceneList = [
-      new EchoScanScene(labStatus),
+      new ProjectorScreenScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
@@ -25,10 +37,17 @@ class ScenePlayer {
       new MandelbrotSetScene(labStatus),
       new FallingLeavesScene(labStatus),
       new ParticleWarpScene(labStatus),
+      new EchoScanScene(labStatus),
     ];
     this.sceneIndex = 0;
+    this.sceneList[this.sceneIndex].setup();
 
     const updateFunction = () => {
+      const width = this.labStatus.clientSize.getWidth();
+      const height = this.labStatus.clientSize.getHeight();
+      ScenePlayer.defaultRenderTarget.clientSize.width = width;
+      ScenePlayer.defaultRenderTarget.clientSize.height = height;
+
       const scene = this.sceneList[this.sceneIndex];
       scene.update(this.labStatus);
       requestAnimationFrame(updateFunction);

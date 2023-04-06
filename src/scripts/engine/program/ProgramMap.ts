@@ -2,9 +2,10 @@ import { EchoScanProgram } from "./echoScan/EchoScanProgram";
 import { FallingLeavesProgram } from "./fallingLeaves/FallingLeavesProgram";
 import { ParticleWarpProgram } from "./particleWarp/ParticleWarpProgram";
 import { PerlineWaveProgram } from "./perlinWave/PerlinWaveProgram";
-import { MandelbrotSetProgram } from "./rayMarchingSpheres/MandelbrotSetProgram";
+import { MandelbrotSetProgram } from "./mandelbrotSet/MandelbrotSetProgram";
 import { SingleColorProgram } from "./singleColor/SingleColorProgram";
 import { TextureProgram } from "./texture/TextureProgram";
+import { FramebufferProgram } from "./framebuffer/FramebufferProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -14,6 +15,7 @@ class ProgramMap {
   private static _fallingLeaves: FallingLeavesProgram;
   private static _particleWarp: ParticleWarpProgram;
   private static _echoScan: EchoScanProgram;
+  private static _framebuffer: FramebufferProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -43,6 +45,10 @@ class ProgramMap {
     return ProgramMap._echoScan;
   }
 
+  static get framebuffer(): FramebufferProgram {
+    return ProgramMap._framebuffer;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -54,6 +60,7 @@ class ProgramMap {
     const fallingLeaves = FallingLeavesProgram.create(gl);
     const particleWarp = ParticleWarpProgram.create(gl);
     const echoScan = EchoScanProgram.create(gl);
+    const framebuffer = FramebufferProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -62,7 +69,8 @@ class ProgramMap {
       !rayMarchingSpheres ||
       !fallingLeaves ||
       !particleWarp ||
-      !echoScan
+      !echoScan ||
+      !framebuffer
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -75,6 +83,7 @@ class ProgramMap {
     ProgramMap._fallingLeaves = fallingLeaves;
     ProgramMap._particleWarp = particleWarp;
     ProgramMap._echoScan = echoScan;
+    ProgramMap._framebuffer = framebuffer;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);

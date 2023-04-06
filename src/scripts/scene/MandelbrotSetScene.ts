@@ -3,7 +3,7 @@ import { Transform } from "../engine/Transform";
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";
 import { QuadGeometry } from "../engine/geometry/QuadGeometry";
 import { ProgramMap } from "../engine/program/ProgramMap";
-import { MandelbrotSetMaterial } from "../engine/program/rayMarchingSpheres/MandelbrotSetMaterial";
+import { MandelbrotSetMaterial } from "../engine/program/mandelbrotSet/MandelbrotSetMaterial";
 import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { Vector2 } from "../math/Vector2";

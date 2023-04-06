@@ -7,6 +7,7 @@ import { EchoScanMaterial } from "../engine/program/echoScan/EchoScanMaterial";
 import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { LabStatus } from "../model/LabStatus";
+import { MouseEventUtil } from "../model/MouseEventUtil";
 import { Scene } from "./Scene";
 
 class EchoScanScene implements Scene {
@@ -16,6 +17,8 @@ class EchoScanScene implements Scene {
   private object3D: Object3D<EchoScanMaterial>;
 
   private startTime: number;
+
+  private mouseEventMap: Map<keyof DocumentEventMap, EventListener>;
 
   constructor(labStatus: LabStatus) {
     this.polar = new PolarCoordinate3(-60 * MathUtil.deg2rad, 60 * MathUtil.deg2rad, 1.0);
@@ -29,10 +32,14 @@ class EchoScanScene implements Scene {
     this.object3D = new Object3D(transform, geometry, material);
 
     this.startTime = performance.now();
+
+    this.mouseEventMap = MouseEventUtil.moveCameraOnPolar(this.camera, this.polar);
   }
 
   setup(): void {
-    
+    for (const [key, value] of this.mouseEventMap) {
+      document.addEventListener(key, value);
+    }
   }
 
   update(labStatus: LabStatus): void {
@@ -58,7 +65,9 @@ class EchoScanScene implements Scene {
   }
 
   teardown(): void {
-    
+    for (const [key, value] of this.mouseEventMap) {
+      document.removeEventListener(key, value);
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import { Geometry } from "../Geometry";
 
-type AcceptableAttributeKeys = 'position' | 'normal';
+type AcceptableAttributeKeys = 'position' | 'normal' | 'uv';
 
 class SphereGeometry {
 
@@ -17,13 +17,15 @@ class SphereGeometry {
         vertices.push(0, 0, radius);
       } else if (key === 'normal') {
         vertices.push(0, 0, 1);
+      } else if (key === 'uv') {
+        vertices.push(0.5, 0.0);
       }
     }
     
     const top = 0;
     for (let yIndex = 1; yIndex < equatorSplit / 2; yIndex++) {
       const theta = Math.PI * yIndex / (equatorSplit / 2);
-      for (let xIndex = 0; xIndex < equatorSplit; xIndex++) {
+      for (let xIndex = 0; xIndex <= equatorSplit; xIndex++) {
         const phi = 2.0 * Math.PI * xIndex / equatorSplit;
         const sinTheta = Math.sin(theta);
         for (const key of attributeKeys) {
@@ -31,12 +33,17 @@ class SphereGeometry {
             vertices.push(...SphereGeometry.calculatePosition(radius, phi, theta, sinTheta));
           } else if (key === 'normal') {
             vertices.push(...SphereGeometry.calculateNormal(phi, theta, sinTheta));
+          } else if (key === 'uv') {
+            const u = 1.0 * xIndex / (equatorSplit);
+            // const v = 1.0 * yIndex / (equatorSplit / 2);
+            const v = 0.5 - 0.5 * Math.cos(Math.PI * yIndex / (equatorSplit / 2));
+            vertices.push(u, v);
           }
         }
 
-        const current = equatorSplit * (yIndex - 1) + xIndex + 1;
+        const current = (equatorSplit + 1) * (yIndex - 1) + xIndex + 1;
         const before = current - 1;
-        const up = current - equatorSplit;
+        const up = current - (equatorSplit + 1);
         const upBefore = up - 1;
         if (xIndex === 0) {
           if (yIndex === 1) {
@@ -61,11 +68,13 @@ class SphereGeometry {
         vertices.push(0, 0, -radius);
       } else if (key === 'normal') {
         vertices.push(0, 0, -1);
+      } else if (key === 'uv') {
+        vertices.push(0.5, 1.0);
       }
     }
-    const bottom = equatorSplit * (equatorSplit / 2 - 1) + 1;
+    const bottom = (equatorSplit + 1) * (equatorSplit / 2 - 1) + 1;
     
-    for (let xIndex = 0; xIndex < equatorSplit; xIndex++) {
+    for (let xIndex = 0; xIndex <= equatorSplit; xIndex++) {
       const current = bottom - equatorSplit + xIndex;
       const before = current - 1;
       if (xIndex === 0) {
