@@ -6,6 +6,7 @@ import { MandelbrotSetProgram } from "./mandelbrotSet/MandelbrotSetProgram";
 import { SingleColorProgram } from "./singleColor/SingleColorProgram";
 import { TextureProgram } from "./texture/TextureProgram";
 import { FramebufferProgram } from "./framebuffer/FramebufferProgram";
+import { CubeMappingProgram } from "./cubeMapping/CubeMappingProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -16,6 +17,7 @@ class ProgramMap {
   private static _particleWarp: ParticleWarpProgram;
   private static _echoScan: EchoScanProgram;
   private static _framebuffer: FramebufferProgram;
+  private static _cubeMapping: CubeMappingProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -49,6 +51,10 @@ class ProgramMap {
     return ProgramMap._framebuffer;
   }
 
+  static get cubeMapping(): CubeMappingProgram {
+    return ProgramMap._cubeMapping;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -61,6 +67,7 @@ class ProgramMap {
     const particleWarp = ParticleWarpProgram.create(gl);
     const echoScan = EchoScanProgram.create(gl);
     const framebuffer = FramebufferProgram.create(gl);
+    const cubeMapping = CubeMappingProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -70,7 +77,8 @@ class ProgramMap {
       !fallingLeaves ||
       !particleWarp ||
       !echoScan ||
-      !framebuffer
+      !framebuffer ||
+      !cubeMapping
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -84,6 +92,7 @@ class ProgramMap {
     ProgramMap._particleWarp = particleWarp;
     ProgramMap._echoScan = echoScan;
     ProgramMap._framebuffer = framebuffer;
+    ProgramMap._cubeMapping = cubeMapping;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);

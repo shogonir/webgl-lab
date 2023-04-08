@@ -7,7 +7,6 @@ import { TextureMaterial } from "../engine/program/texture/TextureMaterial";
 import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { Vector3 } from "../math/Vector3";
-import { SNSS } from "../model/Images";
 import { LabStatus } from "../model/LabStatus";
 import { Scene } from "./Scene";
 
@@ -60,7 +59,7 @@ class TextureMappingScene implements Scene {
       const material = new TextureMaterial(image);
       this.logo = new Object3D(transform, geometry, material);
     };
-    image.src = SNSS;
+    image.src = require("../../assets/img/shogonir.jpg");
 
     this.objectMove = Vector3.zero();
     this.logoMove = Vector3.zero();
@@ -124,4 +123,4 @@ class TextureMappingScene implements Scene {
   }
 }
 
-export {TextureMappingScene, SNSS};
+export {TextureMappingScene};

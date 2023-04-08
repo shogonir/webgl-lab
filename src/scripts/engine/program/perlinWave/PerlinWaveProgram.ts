@@ -2,7 +2,6 @@ import { GLProgram } from "../../common/GLProgram";
 import { Object3D } from "../../Object3D";
 import { Program } from "../../Program";
 import { PerlinWaveMaterial } from "./PerlinWaveMaterial";
-
 import { GLCamera } from "../../common/GLCamera";
 import { mat4 } from "gl-matrix";
 

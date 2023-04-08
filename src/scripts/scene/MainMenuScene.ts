@@ -1,4 +1,3 @@
-import { Geometry } from "../engine/Geometry";
 import { Object3D } from "../engine/Object3D";
 import { Transform } from "../engine/Transform";
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";

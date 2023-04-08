@@ -1,5 +1,6 @@
 import { LabStatus } from "../model/LabStatus";
 import { DefaultRenderTarget } from "../model/RenderTarget";
+import { CubeMappingScene } from "../scene/CubeMappingScene";
 import { DemoListScene } from "../scene/DemoListScene";
 import { EchoScanScene } from "../scene/EchoScanScene";
 import { FallingLeavesScene } from "../scene/FallingLeavesScene";
@@ -29,7 +30,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
-      new ProjectorScreenScene(labStatus),
+      new CubeMappingScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
@@ -38,6 +39,7 @@ class ScenePlayer {
       new FallingLeavesScene(labStatus),
       new ParticleWarpScene(labStatus),
       new EchoScanScene(labStatus),
+      new ProjectorScreenScene(labStatus),
     ];
     this.sceneIndex = 0;
     this.sceneList[this.sceneIndex].setup();

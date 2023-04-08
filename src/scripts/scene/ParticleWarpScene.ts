@@ -9,7 +9,6 @@ import { PolarCoordinate3 } from "../math/PolarCoordinate3";
 import { LabStatus } from "../model/LabStatus";
 import { MouseEventUtil } from "../model/MouseEventUtil";
 import { Scene } from "./Scene";
-import { SNSS } from "./TextureMappingScene";
 
 class ParticleWarpScene implements Scene {
   private polar: PolarCoordinate3;
@@ -22,7 +21,7 @@ class ParticleWarpScene implements Scene {
   private mouseEventMap: Map<keyof DocumentEventMap, EventListener>;
 
   constructor(labStatus: LabStatus) {
-    this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 10 * MathUtil.deg2rad, 1.0);
+    this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 90 * MathUtil.deg2rad, 1.0);
     const clientSize = labStatus.clientSize;
     const aspect = clientSize.getWidth() / clientSize.getHeight();
     const camera = PerspectiveCamera.createWithPolar(this.polar, 90 * MathUtil.deg2rad, aspect, 0.1, 4.0);
@@ -33,12 +32,12 @@ class ParticleWarpScene implements Scene {
     const image = new Image();
     image.onload = () => {
       const transform = Transform.identity();
-      transform.position.addValues(0.0, 0.0, -1.0);
-      transform.rotation.rotateY(20.0 * MathUtil.deg2rad);
+      transform.position.addValues(0.0, 1.0, 0.0);
+      transform.rotation.rotateX(-90 * MathUtil.deg2rad);
       const material = new ParticleWarpMaterial(image, 0.0);
       this.object3D = new Object3D(transform, geometry, material);
     }
-    image.src = SNSS;
+    image.src = require("../../assets/img/shogonir.jpg");
 
     this.startTime = performance.now();
 

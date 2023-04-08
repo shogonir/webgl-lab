@@ -173,10 +173,10 @@ class SingleColorProgram implements Program {
     this.inverseUniform.setMat4(this.inverseMatrix);
     this.inverseUniform.uniform(gl);
 
-    this.lightUniform.setVector4(this.lightDirection);
+    this.lightUniform.setVector3(this.lightDirection);
     this.lightUniform.uniform(gl);
 
-    this.eyeUniform.setVector4(this.eyeDirection);
+    this.eyeUniform.setVector3(this.eyeDirection);
     this.eyeUniform.uniform(gl);
 
     if (!renderTarget || renderTarget.type === 'default') {

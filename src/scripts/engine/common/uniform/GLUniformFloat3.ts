@@ -1,6 +1,4 @@
 import { Vector3 } from "../../../math/Vector3";
-import { Vector4 } from "../../../math/Vector4";
-import { Color } from "../../../model/Color";
 import { GLUniform } from "../GLUniform";
 import { GLUniformValue } from "../GLUniformValue";
 
@@ -67,13 +65,13 @@ class GLUniformFloat3 implements GLUniformValue {
     gl.uniform3f(this.glUniform.location, this.x, this.y, this.z);
   }
 
-  equalsVector4(vector4: Vector4): boolean {
-    return this.x === vector4.x &&
-      this.y === vector4.y &&
-      this.z === vector4.z;
+  equalsVector3(vector3: Vector3): boolean {
+    return this.x === vector3.x &&
+      this.y === vector3.y &&
+      this.z === vector3.z;
   }
 
-  setVector4(vector3: Vector3): void {
+  setVector3(vector3: Vector3): void {
     this.x = vector3.x;
     this.y = vector3.y;
     this.z = vector3.z;
