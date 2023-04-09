@@ -68,12 +68,11 @@ class CubeMappingScene implements Scene {
           const cubeTransform = Transform.identity();
           const scale = 50.0;
           cubeTransform.scale.setValues(scale, scale, scale);
-          cubeTransform.rotation.rotateX(0 * MathUtil.deg2rad);
           const cubeGeometry = RadialNormalCubeGeometry.create(1.0, ['position', 'normal']);
           this.cube = new Object3D(cubeTransform, cubeGeometry, material);
 
           const sphereTransform = Transform.identity();
-          sphereTransform.rotation.rotateZ(90 * MathUtil.deg2rad);
+          sphereTransform.position.addValues(1.0, 0.0, 0.0);
           const sphereGeometry = SphereGeometry.create(1.0, 32, ['position', 'normal']);
           this.sphere = new Object3D(sphereTransform, sphereGeometry, material);
         }

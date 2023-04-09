@@ -8,7 +8,6 @@ import { CubeMappingMaterial } from "./CubeMappingMaterial";
 const vertexShaderSource = `#version 300 es
 in vec3 position;
 in vec3 normal;
-// in vec4 color;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -16,13 +15,10 @@ uniform mat4 projection;
 
 out vec3 passPosition;
 out vec3 passNormal;
-// out vec4 vColor;
 
 void main(void){
-	passPosition   = (model * vec4(position, 1.0)).xyz;
-	passNormal     = (model * vec4(normal, 0.0)).xyz;
-	// vColor      = color;
-	
+	passPosition = (model * vec4(position, 1.0)).xyz;
+	passNormal = (model * vec4(normal, 0.0)).xyz;
   gl_Position = projection * view * model * vec4(position, 1.0);
 }
 `;
@@ -36,7 +32,6 @@ uniform bool reflection;
 
 in vec3 passPosition;
 in vec3 passNormal;
-// in vec4 vColor;
 
 out vec4 fragmentColor;
 
@@ -50,8 +45,9 @@ void main(void){
 	}
 
 	vec4 envColor = texture(cubeTexture, ref);
-	// vec4 destColor = vColor * envColor;
-	fragmentColor = envColor;
+  
+	fragmentColor = envColor * (reflection ? 1.3 : 1.0);
+  fragmentColor.a = 1.0;
 }
 `;
 
