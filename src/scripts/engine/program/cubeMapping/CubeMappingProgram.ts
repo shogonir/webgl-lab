@@ -39,13 +39,14 @@ void main(void){
 	vec3 ref;
 
 	if (reflection) {
-		ref = reflect(passPosition - eyePosition, passNormal);
+		vec3 tmp = reflect(passPosition - eyePosition, passNormal);
+    ref = vec3(tmp.x, tmp.z, tmp.y);
 	} else {
-		ref = passNormal;
+    ref = vec3(passNormal.x, passNormal.z, passNormal.y);
 	}
 
 	vec4 envColor = texture(cubeTexture, ref);
-  
+
 	fragmentColor = envColor * (reflection ? 1.3 : 1.0);
   fragmentColor.a = 1.0;
 }

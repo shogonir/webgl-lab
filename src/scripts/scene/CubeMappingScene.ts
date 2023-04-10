@@ -72,7 +72,7 @@ class CubeMappingScene implements Scene {
           this.cube = new Object3D(cubeTransform, cubeGeometry, material);
 
           const sphereTransform = Transform.identity();
-          sphereTransform.position.addValues(1.0, 0.0, 0.0);
+          // sphereTransform.position.addValues(1.0, 0.0, 0.0);
           const sphereGeometry = SphereGeometry.create(1.0, 32, ['position', 'normal']);
           this.sphere = new Object3D(sphereTransform, sphereGeometry, material);
         }
