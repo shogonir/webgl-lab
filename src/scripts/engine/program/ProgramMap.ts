@@ -7,6 +7,7 @@ import { SingleColorProgram } from "./singleColor/SingleColorProgram";
 import { TextureProgram } from "./texture/TextureProgram";
 import { FramebufferProgram } from "./framebuffer/FramebufferProgram";
 import { CubeMappingProgram } from "./cubeMapping/CubeMappingProgram";
+import { MultiTextureProgram } from "./multiTexture/MultiTextureProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -84,7 +85,7 @@ class ProgramMap {
       !echoScan ||
       !framebuffer ||
       !cubeMapping ||
-      !multiTexture ||
+      !multiTexture
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;

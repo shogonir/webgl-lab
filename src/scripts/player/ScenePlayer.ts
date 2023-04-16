@@ -31,7 +31,6 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
-      new MultiTextureScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
@@ -42,6 +41,7 @@ class ScenePlayer {
       new EchoScanScene(labStatus),
       new ProjectorScreenScene(labStatus),
       new CubeMappingScene(labStatus),
+      new MultiTextureScene(labStatus),
     ];
     this.sceneIndex = 0;
     this.sceneList[this.sceneIndex].setup();
