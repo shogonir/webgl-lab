@@ -8,6 +8,7 @@ import { TextureProgram } from "./texture/TextureProgram";
 import { FramebufferProgram } from "./framebuffer/FramebufferProgram";
 import { CubeMappingProgram } from "./cubeMapping/CubeMappingProgram";
 import { MultiTextureProgram } from "./multiTexture/MultiTextureProgram";
+import { WaterSurfaceProgram } from "./waterSurface/WaterSurfaceProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -20,6 +21,7 @@ class ProgramMap {
   private static _framebuffer: FramebufferProgram;
   private static _cubeMapping: CubeMappingProgram;
   private static _multiTexture: MultiTextureProgram;
+  private static _waterSurface: WaterSurfaceProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -60,6 +62,11 @@ class ProgramMap {
   static get multiTexture(): MultiTextureProgram {
     return ProgramMap._multiTexture;
   }
+
+  static get waterSurface(): WaterSurfaceProgram {
+    return ProgramMap._waterSurface;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -74,6 +81,7 @@ class ProgramMap {
     const framebuffer = FramebufferProgram.create(gl);
     const cubeMapping = CubeMappingProgram.create(gl);
     const multiTexture = MultiTextureProgram.create(gl);
+    const waterSurface = WaterSurfaceProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -85,7 +93,8 @@ class ProgramMap {
       !echoScan ||
       !framebuffer ||
       !cubeMapping ||
-      !multiTexture
+      !multiTexture ||
+      !waterSurface
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -101,6 +110,7 @@ class ProgramMap {
     ProgramMap._framebuffer = framebuffer;
     ProgramMap._cubeMapping = cubeMapping;
     ProgramMap._multiTexture = multiTexture;
+    ProgramMap._waterSurface = waterSurface;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);

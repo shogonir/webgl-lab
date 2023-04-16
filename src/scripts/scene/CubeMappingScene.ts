@@ -128,4 +128,4 @@ class CubeMappingScene implements Scene {
   }
 }
 
-export {CubeMappingScene};
+export {CubeMappingScene, getImageSource};

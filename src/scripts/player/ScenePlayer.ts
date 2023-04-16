@@ -12,6 +12,7 @@ import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { ProjectorScreenScene } from "../scene/ProjectorScreenScene";
 import { Scene } from "../scene/Scene";
 import { TextureMappingScene } from "../scene/TextureMappingScene";
+import { WaterSurfaceScene } from "../scene/WaterSurfaceScene";
 
 class ScenePlayer {
   static defaultRenderTarget: DefaultRenderTarget;
@@ -31,6 +32,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
+      new WaterSurfaceScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),

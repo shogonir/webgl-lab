@@ -21,7 +21,7 @@ class GLUniformInt1 implements GLUniformValue {
   ): GLUniformInt1 | undefined {
     const glUniform = GLUniform.create(gl, program, name);
     if (!glUniform) {
-      console.error('[ERROR] could not create GLUniformInt1');
+      console.error('[ERROR] could not create GLUniformInt1', name);
       return undefined;
     }
 
