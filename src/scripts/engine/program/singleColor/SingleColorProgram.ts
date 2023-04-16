@@ -41,7 +41,7 @@ void main() {
 `;
 
 const fragmentShaderSource = `#version 300 es
-precision highp float;
+precision mediump float;
 
 in vec4 passColor;
 

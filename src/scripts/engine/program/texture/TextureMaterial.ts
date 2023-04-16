@@ -19,7 +19,7 @@ class TextureMaterial implements Material {
       return;
     }
 
-    const glTexture = GLTexture.create(gl, this.image);
+    const glTexture = GLTexture.create(gl, program, 'tex', 0, this.image);
     if (!glTexture) {
       console.error('[ERROR] TextureMaterial.prepare() could not create GLTexture');
       return;

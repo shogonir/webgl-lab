@@ -25,6 +25,10 @@ class ProjectorScreenScene implements Scene {
   private framebufferRenderTarget?: FramebufferRenderTarget;
 
   constructor(labStatus: LabStatus) {
+    const gl = labStatus.gl;
+    const program = ProgramMap.framebuffer;
+    const prg = program.glProgram.program;
+
     this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 60 * MathUtil.deg2rad, 2);
     const clientSize = labStatus.clientSize;
     const aspect = clientSize.getWidth() / clientSize.getHeight();
@@ -36,7 +40,7 @@ class ProjectorScreenScene implements Scene {
     const material = new SingleColorMaterial(Color.blue());
     this.object3D = new Object3D(transform, geometry, material);
 
-    this.glFramebuffer = GLFramebuffer.create(labStatus.gl, 512, 512);
+    this.glFramebuffer = GLFramebuffer.create(gl, prg, 'tex', 0, 512, 512);
 
     if (this.glFramebuffer) {
       this.framebufferRenderTarget = {

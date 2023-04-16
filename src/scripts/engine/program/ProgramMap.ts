@@ -18,6 +18,7 @@ class ProgramMap {
   private static _echoScan: EchoScanProgram;
   private static _framebuffer: FramebufferProgram;
   private static _cubeMapping: CubeMappingProgram;
+  private static _multiTexture: MultiTextureProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -55,6 +56,9 @@ class ProgramMap {
     return ProgramMap._cubeMapping;
   }
 
+  static get multiTexture(): MultiTextureProgram {
+    return ProgramMap._multiTexture;
+  }
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -68,6 +72,7 @@ class ProgramMap {
     const echoScan = EchoScanProgram.create(gl);
     const framebuffer = FramebufferProgram.create(gl);
     const cubeMapping = CubeMappingProgram.create(gl);
+    const multiTexture = MultiTextureProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -78,7 +83,8 @@ class ProgramMap {
       !particleWarp ||
       !echoScan ||
       !framebuffer ||
-      !cubeMapping
+      !cubeMapping ||
+      !multiTexture ||
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -93,6 +99,7 @@ class ProgramMap {
     ProgramMap._echoScan = echoScan;
     ProgramMap._framebuffer = framebuffer;
     ProgramMap._cubeMapping = cubeMapping;
+    ProgramMap._multiTexture = multiTexture;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);

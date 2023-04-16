@@ -6,6 +6,7 @@ import { EchoScanScene } from "../scene/EchoScanScene";
 import { FallingLeavesScene } from "../scene/FallingLeavesScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
+import { MultiTextureScene } from "../scene/MultiTextureScene";
 import { ParticleWarpScene } from "../scene/ParticleWarpScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { ProjectorScreenScene } from "../scene/ProjectorScreenScene";
@@ -30,7 +31,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
-      new CubeMappingScene(labStatus),
+      new MultiTextureScene(labStatus),
       new TextureMappingScene(labStatus),
       new MainMenuScene(labStatus),
       new DemoListScene(labStatus),
@@ -40,6 +41,7 @@ class ScenePlayer {
       new ParticleWarpScene(labStatus),
       new EchoScanScene(labStatus),
       new ProjectorScreenScene(labStatus),
+      new CubeMappingScene(labStatus),
     ];
     this.sceneIndex = 0;
     this.sceneList[this.sceneIndex].setup();

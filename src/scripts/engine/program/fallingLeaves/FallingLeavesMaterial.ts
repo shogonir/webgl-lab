@@ -53,7 +53,7 @@ class FallingLeavesMaterial implements Material {
       return;
     }
 
-    const glTexture = GLTexture.create(gl, this.image);
+    const glTexture = GLTexture.create(gl, program, 'tex', 0, this.image);
     if (!glTexture) {
       console.error('[ERROR] FallingLeavesMaterial.prepare() could not create GLTexture');
       return;
