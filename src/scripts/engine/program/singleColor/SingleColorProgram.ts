@@ -7,7 +7,6 @@ import { SingleColorMaterial } from "./SingleColorMaterial";
 import { GLUniformMat4 } from "../../common/uniform/GLUniformMat4";
 import { GLUniformFloat3 } from "../../common/uniform/GLUniformFloat3";
 import { Vector3 } from "../../../math/Vector3";
-import { GLFramebuffer } from "../../common/GLFramebuffer";
 import { RenderTarget } from "../../../model/RenderTarget";
 import { ScenePlayer } from "../../../player/ScenePlayer";
 

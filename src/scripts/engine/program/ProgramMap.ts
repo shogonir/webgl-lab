@@ -9,6 +9,8 @@ import { FramebufferProgram } from "./framebuffer/FramebufferProgram";
 import { CubeMappingProgram } from "./cubeMapping/CubeMappingProgram";
 import { MultiTextureProgram } from "./multiTexture/MultiTextureProgram";
 import { WaterSurfaceProgram } from "./waterSurface/WaterSurfaceProgram";
+import { SeaWaveProgram } from "./seaSurface/SeaWaveProgram";
+import { SeaSurfaceProgram } from "./seaSurface/SeaSurfaceProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -22,6 +24,8 @@ class ProgramMap {
   private static _cubeMapping: CubeMappingProgram;
   private static _multiTexture: MultiTextureProgram;
   private static _waterSurface: WaterSurfaceProgram;
+  private static _seaWave: SeaWaveProgram;
+  private static _seaSurface: SeaSurfaceProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -67,6 +71,14 @@ class ProgramMap {
     return ProgramMap._waterSurface;
   }
 
+  static get seaWave(): SeaWaveProgram {
+    return ProgramMap._seaWave;
+  }
+
+  static get seaSurface(): SeaSurfaceProgram {
+    return ProgramMap._seaSurface;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -82,6 +94,8 @@ class ProgramMap {
     const cubeMapping = CubeMappingProgram.create(gl);
     const multiTexture = MultiTextureProgram.create(gl);
     const waterSurface = WaterSurfaceProgram.create(gl);
+    const seaWave = SeaWaveProgram.create(gl);
+    const seaSurface = SeaSurfaceProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -94,7 +108,9 @@ class ProgramMap {
       !framebuffer ||
       !cubeMapping ||
       !multiTexture ||
-      !waterSurface
+      !waterSurface ||
+      !seaWave ||
+      !seaSurface
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -111,6 +127,8 @@ class ProgramMap {
     ProgramMap._cubeMapping = cubeMapping;
     ProgramMap._multiTexture = multiTexture;
     ProgramMap._waterSurface = waterSurface;
+    ProgramMap._seaWave = seaWave;
+    ProgramMap._seaSurface = seaSurface;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);

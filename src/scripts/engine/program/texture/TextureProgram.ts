@@ -3,6 +3,7 @@ import { GLCamera } from "../../common/GLCamera";
 import { GLProgram } from "../../common/GLProgram";
 import { Object3D } from "../../Object3D";
 import { TextureMaterial } from "./TextureMaterial";
+import { Program } from "../../Program";
 
 const vertexShaderSource = `#version 300 es
 in vec3 position;
@@ -32,7 +33,7 @@ void main() {
   fragmentColor = texture(tex, passUv);
 }`;
 
-class TextureProgram {
+class TextureProgram implements Program {
   readonly gl: WebGL2RenderingContext;
   readonly glProgram: GLProgram;
   readonly glCamera: GLCamera;
