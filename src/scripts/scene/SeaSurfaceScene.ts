@@ -34,6 +34,7 @@ class SeaSurfaceScene implements Scene {
 
   constructor(labStatus: LabStatus) {
     const gl = labStatus.gl;
+    
     const program = ProgramMap.framebuffer;
     const prg = program.glProgram.program;
 
@@ -83,7 +84,16 @@ class SeaSurfaceScene implements Scene {
             {
               const transform = Transform.identity();
               const geometry = PlaneGeometry.create(1.0, 100, ['position', 'uv']);
-              const material = new SeaSurfaceMaterial(waveBuffer, this.polar.toVector3());
+              const material = new SeaSurfaceMaterial(
+                waveBuffer,
+                imageMap.get('top') as TexImageSource,
+                imageMap.get('bottom') as TexImageSource,
+                imageMap.get('front') as TexImageSource,
+                imageMap.get('back') as TexImageSource,
+                imageMap.get('left') as TexImageSource,
+                imageMap.get('right') as TexImageSource,
+                this.polar.toVector3()
+              );
               this.seaSurface = new Object3D(transform, geometry, material);
             }
           }

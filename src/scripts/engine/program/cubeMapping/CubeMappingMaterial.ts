@@ -57,7 +57,7 @@ class CubeMappingMaterial implements Material {
       return;
     }
 
-    const glTextureCubeMap = GLTextureCubeMap.create(gl, this.top, this.bottom, this.front, this.back, this.left, this.right);
+    const glTextureCubeMap = GLTextureCubeMap.create(gl, program, 'cubeTexture', 1, this.top, this.bottom, this.front, this.back, this.left, this.right);
     if (!glTextureCubeMap) {
       console.error('[ERROR] CubeMappingMaterial.prepare() could not create GLTextureCubeMap');
       return undefined;

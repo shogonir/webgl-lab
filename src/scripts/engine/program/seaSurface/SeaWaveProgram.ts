@@ -15,8 +15,11 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform float time;
+
 out vec2 passUv;
 out float quadIndex;
+out float passTime;
 
 float rand (float x) {
   return mod(((x * 34.0) + 1.0) * x, 289.0);
@@ -25,6 +28,7 @@ float rand (float x) {
 void main() {
   passUv = uv;
   quadIndex = floor(vertexIndex / 4.0);
+  passTime = time;
 
   // dummy calculation to use position
   gl_Position = projection * view * model * vec4(position, 1.0);
@@ -34,7 +38,8 @@ void main() {
   float y = rt2 * (uv.y * 2.0 - 1.0);
 
   const float pi = 3.14159265358979323846;
-  float degree = mod(rand(quadIndex), 90.0) + 45.0;
+  float wide = 90.0;
+  float degree = mod(rand(quadIndex), wide) + wide / 2.0;
   float radian = degree * pi / 180.0;
 
   float xx = cos(radian) * x - sin(radian) * y;
@@ -49,8 +54,7 @@ precision mediump float;
 
 in vec2 passUv;
 in float quadIndex;
-
-uniform float time;
+in float passTime;
 
 out vec4 fragmentColor;
 
@@ -86,11 +90,10 @@ void main(void) {
   float height = 1.0 / pow(2.0, quadIndex + 1.0);
 
   // float freq = quadIndex + 1.0;
-  float x = (1.0 / height) * 4.0 * passUv.y + (time / 1000.0);
+  float x = (1.0 / height) * 4.0 * passUv.y + (passTime / 600.0);
   float theta = calcTheta(x);
   float y = height * (calcY(theta) + 0.5);
 
-  // float green = sin(time / 1000.0);
   fragmentColor = vec4(1.0, 1.0, 1.0, y);
 }
 `;

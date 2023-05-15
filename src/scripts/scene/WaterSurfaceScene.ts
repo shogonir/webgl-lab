@@ -3,7 +3,6 @@ import { Transform } from "../engine/Transform";
 import { PerspectiveCamera } from "../engine/camera/PerspectiveCamera";
 import { PlaneGeometry } from "../engine/geometry/PlaneGeometry";
 import { ProgramMap } from "../engine/program/ProgramMap";
-import { CubeMappingMaterial } from "../engine/program/cubeMapping/CubeMappingMaterial";
 import { WaterSurfaceMaterial } from "../engine/program/waterSurface/WaterSurfaceMaterial";
 import { MathUtil } from "../math/MathUtil";
 import { PolarCoordinate3 } from "../math/PolarCoordinate3";

@@ -1,3 +1,6 @@
+import { GLTexture, numberToTarget } from "./GLTexture";
+import { GLUniformInt1 } from "./uniform/GLUniformInt1";
+
 const DEFAULT_TEXTURE_PARAMETER_MAP = new Map([
   [WebGL2RenderingContext.TEXTURE_MAG_FILTER, WebGL2RenderingContext.LINEAR],
   [WebGL2RenderingContext.TEXTURE_MIN_FILTER, WebGL2RenderingContext.LINEAR],
@@ -14,6 +17,8 @@ class GLTextureCubeMap {
   readonly right: TexImageSource;
 
   readonly texture: WebGLTexture;
+  readonly uniformLocation: GLUniformInt1;
+  readonly targetNumber: number;
   readonly textureParameterMap: Map<number, number>;
 
   private constructor(
@@ -24,6 +29,8 @@ class GLTextureCubeMap {
     left: TexImageSource,
     right: TexImageSource,
     texture: WebGLTexture,
+    uniformLocation: GLUniformInt1,
+    targetNumber: number,
     textureParameterMap: Map<number, number>
   ) {
     this.top = top;
@@ -33,11 +40,16 @@ class GLTextureCubeMap {
     this.left = left;
     this.right = right;
     this.texture = texture;
+    this.uniformLocation = uniformLocation;
+    this.targetNumber = targetNumber;
     this.textureParameterMap = textureParameterMap;
   }
 
   static create(
     gl: WebGL2RenderingContext,
+    program: WebGLProgram,
+    name: string,
+    targetNumber: number,
     top: TexImageSource,
     bottom: TexImageSource,
     front: TexImageSource,
@@ -52,6 +64,15 @@ class GLTextureCubeMap {
       return undefined;
     }
 
+    const uniformLocation = GLUniformInt1.create(gl, program, name, targetNumber);
+    if (!uniformLocation) {
+      console.error('[ERROR] GLTextureCubeMap.create() could not create GLUniform');
+      return undefined;
+    }
+
+    const target = numberToTarget(targetNumber);
+    uniformLocation.uniform(gl);
+    gl.activeTexture(target);
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 
     gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_Y, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, top);
@@ -65,10 +86,12 @@ class GLTextureCubeMap {
       gl.texParameteri(gl.TEXTURE_CUBE_MAP, key, value);
     }
 
-    return new GLTextureCubeMap(top, bottom, front, back, left, right, texture, textureParameterMap);
+    return new GLTextureCubeMap(top, bottom, front, back, left, right, texture, uniformLocation, targetNumber, textureParameterMap);
   }
 
   bind(gl: WebGL2RenderingContext): void {
+    this.uniformLocation.uniform(gl);
+    gl.activeTexture(this.targetNumber);
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.texture);
   }
 }

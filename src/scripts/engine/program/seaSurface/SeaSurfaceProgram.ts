@@ -48,7 +48,7 @@ in vec3 passNormal;
 in vec3 passPosition;
 
 uniform vec3 eyePosition;
-// uniform samplerCube cubeTexture;
+uniform samplerCube cubeTexture;
 
 out vec4 fragmentColor;
 
@@ -61,14 +61,15 @@ void main() {
   float normLight = clamp(light, -1.0, 1.0);
 
   // vec4 color = vec4(32.0 / 255.0, 47.0 / 255.0, 85.0 / 255.0, 1.0);
-  vec4 color = vec4(20.0 / 255.0, 40.0 / 255.0, 150.0 / 255.0, 1.0);
+  vec4 color = vec4(0.0 / 255.0, 100.0 / 255.0, 255.0 / 255.0, 1.0);
 
-  // vec3 tmp = reflect(passPosition - eyePosition, passNormal);
-  // vec3 ref = vec3(tmp.x, tmp.z, tmp.y);
-  // vec3 envColor = texture(cubeTexture, ref).xyz;
+  vec3 tmp = reflect(passPosition - eyePosition, passNormal);
+  vec3 ref = vec3(tmp.x, tmp.z, tmp.y);
+  vec3 envColor = texture(cubeTexture, ref).xyz;
   // vec3 envColor = vec3(0.0, 0.0, 0.0);
 
-  fragmentColor = color + vec4(normLight);
+  fragmentColor = color * 0.5 + vec4(normLight) + vec4(envColor, 0.0) * 0.2;
+  fragmentColor.a = 1.0;
 }
 `;
 

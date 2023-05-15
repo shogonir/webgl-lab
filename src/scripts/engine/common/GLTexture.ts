@@ -75,8 +75,8 @@ type TextureTarget =
   typeof Texture30 |
   typeof Texture31;
 
-const numberToTarget = (target: number): TextureTarget => {
-  switch (target) {
+const numberToTarget = (targetNumber: number): TextureTarget => {
+  switch (targetNumber) {
     case 1:
       return Texture01;
     case 2:
@@ -149,17 +149,20 @@ class GLTexture {
   readonly target: TextureTarget;
   readonly source: TexImageSource;
   readonly textureParameterMap: Map<number, number>;
+  readonly glUniform: GLUniformInt1;
 
   private constructor(
     texture: WebGLTexture,
     target: TextureTarget,
     source: TexImageSource,
-    textureParameterMap: Map<number, number>
+    textureParameterMap: Map<number, number>,
+    glUniform: GLUniformInt1
   ) {
     this.texture = texture;
     this.target = target;
     this.source = source;
     this.textureParameterMap = textureParameterMap;
+    this.glUniform = glUniform;
   }
 
   static create(
@@ -183,9 +186,9 @@ class GLTexture {
       return undefined;
     }
     
+    glUniform.uniform(gl);
     gl.activeTexture(target);
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    glUniform.uniform(gl);
 
     for (const [key, value] of textureParameterMap.entries()) {
       gl.texParameteri(gl.TEXTURE_2D, key, value);
@@ -193,10 +196,11 @@ class GLTexture {
 
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
 
-    return new GLTexture(texture, target, source, textureParameterMap);
+    return new GLTexture(texture, target, source, textureParameterMap, glUniform);
   }
 
   bind(gl: WebGL2RenderingContext): void {
+    this.glUniform.uniform(gl);
     gl.activeTexture(this.target);
     gl.bindTexture(gl.TEXTURE_2D, this.texture);
   }

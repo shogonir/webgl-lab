@@ -1,4 +1,5 @@
 import { GLTexture } from "./GLTexture";
+import { GLUniformInt1 } from "./uniform/GLUniformInt1";
 
 class GLFramebuffer {
   readonly framebuffer: WebGLFramebuffer;
@@ -61,8 +62,8 @@ class GLFramebuffer {
       return undefined;
     }
 
-    gl.activeTexture(glTexture.target);
-    gl.bindTexture(gl.TEXTURE_2D, glTexture.texture);
+    glTexture.bind(gl);
+
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -78,9 +79,7 @@ class GLFramebuffer {
   }
 
   bind(gl: WebGL2RenderingContext): void {
-    gl.activeTexture(this.glTexture.target);
-    gl.bindTexture(gl.TEXTURE_2D, this.glTexture.texture);
-    // gl.bindTexture(gl.TEXTURE_2D, this.texture);
+    this.glTexture.bind(gl);
   }
 }
 
