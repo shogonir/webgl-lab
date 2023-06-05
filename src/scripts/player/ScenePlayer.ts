@@ -8,6 +8,7 @@ import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
 import { MultiTextureScene } from "../scene/MultiTextureScene";
 import { ParticleWarpScene } from "../scene/ParticleWarpScene";
+import { PbrBaseSpheresScene } from "../scene/PbrBaseSpheresScene";
 import { PerlinWaveScene } from "../scene/PerlinWaveScene";
 import { ProjectorScreenScene } from "../scene/ProjectorScreenScene";
 import { Scene } from "../scene/Scene";
@@ -33,6 +34,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
+      new PbrBaseSpheresScene(labStatus),
       new SeaSurfaceScene(labStatus),
       new WaterSurfaceScene(labStatus),
       new TextureMappingScene(labStatus),

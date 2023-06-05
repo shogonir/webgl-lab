@@ -11,6 +11,7 @@ import { MultiTextureProgram } from "./multiTexture/MultiTextureProgram";
 import { WaterSurfaceProgram } from "./waterSurface/WaterSurfaceProgram";
 import { SeaWaveProgram } from "./seaSurface/SeaWaveProgram";
 import { SeaSurfaceProgram } from "./seaSurface/SeaSurfaceProgram";
+import { PbrBaseProgram } from "./pbrBase/PbrBaseProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -26,6 +27,7 @@ class ProgramMap {
   private static _waterSurface: WaterSurfaceProgram;
   private static _seaWave: SeaWaveProgram;
   private static _seaSurface: SeaSurfaceProgram;
+  private static _pbrBase: PbrBaseProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -79,6 +81,10 @@ class ProgramMap {
     return ProgramMap._seaSurface;
   }
 
+  static get pbrBase(): PbrBaseProgram {
+    return ProgramMap._pbrBase;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -96,6 +102,7 @@ class ProgramMap {
     const waterSurface = WaterSurfaceProgram.create(gl);
     const seaWave = SeaWaveProgram.create(gl);
     const seaSurface = SeaSurfaceProgram.create(gl);
+    const pbrBase = PbrBaseProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -110,7 +117,8 @@ class ProgramMap {
       !multiTexture ||
       !waterSurface ||
       !seaWave ||
-      !seaSurface
+      !seaSurface ||
+      !pbrBase
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -129,6 +137,7 @@ class ProgramMap {
     ProgramMap._waterSurface = waterSurface;
     ProgramMap._seaWave = seaWave;
     ProgramMap._seaSurface = seaSurface;
+    ProgramMap._pbrBase = pbrBase;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);
