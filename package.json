@@ -15,5 +15,9 @@
     "@types/node": "^18.15.11",
     "gl-matrix": "^3.4.3",
     "parcel": "^2.8.3"
+  },
+  "dependencies": {
+    "@types/d3-delaunay": "^6.0.1",
+    "d3-delaunay": "^6.0.4"
   }
 }

@@ -1,6 +1,7 @@
 import { LabStatus } from "../model/LabStatus";
 import { DefaultRenderTarget } from "../model/RenderTarget";
 import { CubeMappingScene } from "../scene/CubeMappingScene";
+import { DelaunayContourScene } from "../scene/DelaunayContourScene";
 import { DemoListScene } from "../scene/DemoListScene";
 import { EchoScanScene } from "../scene/EchoScanScene";
 import { FallingLeavesScene } from "../scene/FallingLeavesScene";
@@ -34,6 +35,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
+      new DelaunayContourScene(labStatus),
       new PbrBaseSpheresScene(labStatus),
       new SeaSurfaceScene(labStatus),
       new WaterSurfaceScene(labStatus),
