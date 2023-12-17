@@ -5,6 +5,7 @@ import { DelaunayContourScene } from "../scene/DelaunayContourScene";
 import { DemoListScene } from "../scene/DemoListScene";
 import { EchoScanScene } from "../scene/EchoScanScene";
 import { FallingLeavesScene } from "../scene/FallingLeavesScene";
+import { HeatHazeTextureScene } from "../scene/HeatHazeTextureScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
 import { MultiTextureScene } from "../scene/MultiTextureScene";
@@ -35,6 +36,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
+      new HeatHazeTextureScene(labStatus),      
       new DelaunayContourScene(labStatus),
       new PbrBaseSpheresScene(labStatus),
       new SeaSurfaceScene(labStatus),

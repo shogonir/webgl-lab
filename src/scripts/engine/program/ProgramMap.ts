@@ -13,6 +13,7 @@ import { SeaWaveProgram } from "./seaSurface/SeaWaveProgram";
 import { SeaSurfaceProgram } from "./seaSurface/SeaSurfaceProgram";
 import { PbrBaseProgram } from "./pbrBase/PbrBaseProgram";
 import { DelaunayContourProgram } from "./delaunayContour/DelaunayContourProgram";
+import { HeatHazeProgram } from "./heatHaze/HeatHazeProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -30,6 +31,7 @@ class ProgramMap {
   private static _seaSurface: SeaSurfaceProgram;
   private static _pbrBase: PbrBaseProgram;
   private static _delaunayContour: DelaunayContourProgram;
+  private static _heatHaze: HeatHazeProgram;
   
   static get singleColorProgram(): SingleColorProgram {
     return ProgramMap._singleColorProgram;
@@ -91,6 +93,10 @@ class ProgramMap {
     return ProgramMap._delaunayContour;
   }
 
+  static get heatHaze(): HeatHazeProgram {
+    return ProgramMap._heatHaze;
+  }
+
   static setup(gl: WebGL2RenderingContext): boolean {
     console.log('program map setup() start');
     const startTime = performance.now();
@@ -110,6 +116,7 @@ class ProgramMap {
     const seaSurface = SeaSurfaceProgram.create(gl);
     const pbrBase = PbrBaseProgram.create(gl);
     const delaunayContour = DelaunayContourProgram.create(gl);
+    const heatHaze = HeatHazeProgram.create(gl);
 
     if (
       !singleColorProgram ||
@@ -126,7 +133,8 @@ class ProgramMap {
       !seaWave ||
       !seaSurface ||
       !pbrBase ||
-      !delaunayContour
+      !delaunayContour ||
+      !heatHaze
     ) {
       console.error('[ERROR] ProgramMap.setup() could not create Program');
       return false;
@@ -147,6 +155,7 @@ class ProgramMap {
     ProgramMap._seaSurface = seaSurface;
     ProgramMap._pbrBase = pbrBase;
     ProgramMap._delaunayContour = delaunayContour;
+    ProgramMap._heatHaze = heatHaze;
 
     const passTime = performance.now() - startTime;
     console.log(`shader compile tooks ${Math.round(passTime)} ms`);
