@@ -14,6 +14,8 @@ import { SeaSurfaceProgram } from "./seaSurface/SeaSurfaceProgram";
 import { PbrBaseProgram } from "./pbrBase/PbrBaseProgram";
 import { DelaunayContourProgram } from "./delaunayContour/DelaunayContourProgram";
 import { HeatHazeProgram } from "./heatHaze/HeatHazeProgram";
+import { ParticleColorMaterial } from "./particleColor/ParticleColorMaterial";
+import { ParticleColorProgram } from "./particleColor/ParticleColorProgram";
 
 class ProgramMap {
   private static _singleColorProgram: SingleColorProgram;
@@ -22,6 +24,7 @@ class ProgramMap {
   private static _mandelbrotSet: MandelbrotSetProgram;
   private static _fallingLeaves: FallingLeavesProgram;
   private static _particleWarp: ParticleWarpProgram;
+  private static _particleColor: ParticleColorProgram;
   private static _echoScan: EchoScanProgram;
   private static _framebuffer: FramebufferProgram;
   private static _cubeMapping: CubeMappingProgram;
@@ -55,6 +58,10 @@ class ProgramMap {
 
   static get particleWarp(): ParticleWarpProgram {
     return ProgramMap._particleWarp;
+  }
+
+  static get particelColor(): ParticleColorProgram {
+    return ProgramMap._particleColor;
   }
 
   static get echoScan(): EchoScanProgram {
@@ -107,6 +114,7 @@ class ProgramMap {
     const rayMarchingSpheres = MandelbrotSetProgram.create(gl);
     const fallingLeaves = FallingLeavesProgram.create(gl);
     const particleWarp = ParticleWarpProgram.create(gl);
+    const particleColor = ParticleColorProgram.create(gl);
     const echoScan = EchoScanProgram.create(gl);
     const framebuffer = FramebufferProgram.create(gl);
     const cubeMapping = CubeMappingProgram.create(gl);
@@ -125,6 +133,7 @@ class ProgramMap {
       !rayMarchingSpheres ||
       !fallingLeaves ||
       !particleWarp ||
+      !particleColor ||
       !echoScan ||
       !framebuffer ||
       !cubeMapping ||
@@ -146,6 +155,7 @@ class ProgramMap {
     ProgramMap._mandelbrotSet = rayMarchingSpheres;
     ProgramMap._fallingLeaves = fallingLeaves;
     ProgramMap._particleWarp = particleWarp;
+    ProgramMap._particleColor = particleColor;
     ProgramMap._echoScan = echoScan;
     ProgramMap._framebuffer = framebuffer;
     ProgramMap._cubeMapping = cubeMapping;

@@ -8,6 +8,7 @@ import { FallingLeavesScene } from "../scene/FallingLeavesScene";
 import { HeatHazeTextureScene } from "../scene/HeatHazeTextureScene";
 import { MainMenuScene } from "../scene/MainMenuScene";
 import { MandelbrotSetScene } from "../scene/MandelbrotSetScene";
+import { MandelbulbMistScene } from "../scene/MandelbulbMistScene";
 import { MultiTextureScene } from "../scene/MultiTextureScene";
 import { ParticleWarpScene } from "../scene/ParticleWarpScene";
 import { PbrBaseSpheresScene } from "../scene/PbrBaseSpheresScene";
@@ -36,6 +37,7 @@ class ScenePlayer {
 
     this.labStatus = labStatus;
     this.sceneList = [
+      new MandelbulbMistScene(labStatus),
       new HeatHazeTextureScene(labStatus),      
       new DelaunayContourScene(labStatus),
       new PbrBaseSpheresScene(labStatus),

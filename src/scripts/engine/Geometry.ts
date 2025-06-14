@@ -21,6 +21,10 @@ class Geometry {
     this.needsApplyVertices = false;
   }
 
+  getVerticesLength(): number {
+    return this.vertices.length;
+  }
+
   getIndicesLength(): number {
     return this.indices.length;
   }
