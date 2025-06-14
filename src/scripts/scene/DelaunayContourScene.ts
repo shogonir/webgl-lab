@@ -265,7 +265,6 @@ class DelaunayContourScene implements Scene {
   private mouseEventMap: Map<keyof DocumentEventMap, EventListener>;
 
   constructor(labStatus: LabStatus) {
-    console.log('scene constructor');
     this.polar = new PolarCoordinate3(-90 * MathUtil.deg2rad, 30 * MathUtil.deg2rad, 3);
     const clientSize = labStatus.clientSize;
     const aspect = clientSize.getWidth() / clientSize.getHeight();
@@ -276,10 +275,8 @@ class DelaunayContourScene implements Scene {
       const latLng = calculateLatLng(point.position);
       return [latLng.lng, latLng.lat];
     });
-    console.log('points', points);
 
     const delaunay = Delaunay.from(points);
-    console.log('delaunay', delaunay);
 
     const transform = Transform.identity();
     transform.position.setValues(-142.0, -44.0, 0.0);
@@ -297,13 +294,10 @@ class DelaunayContourScene implements Scene {
       }
       return [latLng.lng, latLng.lat, 0.0, point.pressure];
     });
-    console.log('min max', minPressure, maxPressure);
     const indices: number[] = Array.from(delaunay.triangles);
     const geometry = new Geometry(vertices, indices, ['position', 'scalar_00']);
     const material = new DelaunayContourMaterial();
     this.delaunayContour = new Object3D(transform, geometry, material);
-
-    console.log('geometry', geometry);
 
     const transform2 = Transform.identity();
     const geometry2 = CubeGeometry.create(1.0, ['position', 'normal']);
